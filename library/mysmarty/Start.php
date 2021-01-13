@@ -87,7 +87,7 @@ class Start
                 }
             }
         } else {
-            self::runRoute(ROUTE['admin'], $mat);
+            self::runRoute(ROUTE['home'], $mat);
         }
         error('页面找不到');
     }

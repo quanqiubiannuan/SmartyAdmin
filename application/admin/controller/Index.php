@@ -2,9 +2,7 @@
 
 namespace application\admin\controller;
 
-use library\mysmarty\Controller;
-
-class Index extends Controller
+class Index extends Backend
 {
     public function home()
     {
