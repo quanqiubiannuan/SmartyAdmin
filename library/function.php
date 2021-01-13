@@ -1611,7 +1611,7 @@ function generateRoute(): void
             if (empty($home)) {
                 error('未定义主页路由');
             }
-            $data['home'] = $home;
+            $data['admin'] = $home;
         } catch (ReflectionException $e) {
             error('路由文件生成失败');
         }

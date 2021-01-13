@@ -1,6 +1,6 @@
 <?php
 
-namespace application\home\model;
+namespace application\admin\model;
 
 use library\mysmarty\Model;
 

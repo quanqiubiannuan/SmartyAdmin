@@ -1,6 +1,6 @@
 <?php
 
-namespace application\home\controller;
+namespace application\admin\controller;
 
 use library\mysmarty\Controller;
 

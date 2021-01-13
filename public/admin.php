@@ -2,7 +2,7 @@
 define('ROOT_DIR', dirname(__DIR__));
 require_once ROOT_DIR . '/library/mysmarty/Start.php';
 //定义默认模块
-define('MODULE', 'home');
+define('MODULE', 'admin');
 //定义默认控制器
 define('CONTROLLER', 'Index');
 //定义默认方法

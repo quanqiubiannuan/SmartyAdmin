@@ -1,6 +1,6 @@
 <?php
 
-namespace application\home\middleware;
+namespace application\admin\middleware;
 
 use library\mysmarty\Middleware;
 
