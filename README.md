@@ -1,0 +1,2 @@
+# SmartyAdmin-MySmarty
+基于MySmarty框架开发的SmartyAdmin后台急速开发框架
