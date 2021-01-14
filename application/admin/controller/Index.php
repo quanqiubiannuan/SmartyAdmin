@@ -3,7 +3,6 @@
 namespace application\admin\controller;
 
 use application\admin\model\LoginLog;
-use library\mysmarty\Route;
 
 class Index extends Backend
 {
@@ -31,7 +30,6 @@ class Index extends Backend
     /**
      * 输出PHP信息
      */
-    #[Route('/phpinfo')]
     public function phpinfo()
     {
         phpinfo();
