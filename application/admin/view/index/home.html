@@ -24,40 +24,11 @@
                 <td>{$iniPath}</td>
             </tr>
             <tr>
-                <th>PHP已启用扩展</th>
-                <td>bz2，curl</td>
+                <th>已启用扩展</th>
+                <td>{$extensions}</td>
             </tr>
             <tr>
-                <th>PHP已禁用函数</th>
-                <td>bz2，curl</td>
-            </tr>
-            <tr>
-                <th>Zend OPcache</th>
-                <td>已启用</td>
-            </tr>
-            <tr>
-                <th>JIT</th>
-                <td>已启用</td>
-            </tr>
-            <tr>
-                <th>IPv6</th>
-                <td>已启用</td>
-            </tr>
-            <tr>
-                <th>最大执行时间</th>
-                <td>30秒</td>
-            </tr>
-            <tr>
-                <th>最多文件上传个数</th>
-                <td>20</td>
-            </tr>
-            <tr>
-                <th>最大文件上传</th>
-                <td>5M</td>
-            </tr>
-            <tr>
-                <th>最大POST请求大小</th>
-                <td>30M</td>
+                <td colspan="2"><a href="{url}/phpinfo" target="_blank">phpinfo()</a></td>
             </tr>
         </table>
     </div>
@@ -67,10 +38,9 @@
                 登录日志
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item"><b>时间：</b>2020-01-01 10:01:01<b class="ms-2">IP：</b>113.123.11.11</li>
-                <li class="list-group-item"><b>时间：</b>2020-01-01 10:01:01<b class="ms-2">IP：</b>113.123.11.11</li>
-                <li class="list-group-item"><b>时间：</b>2020-01-01 10:01:01<b class="ms-2">IP：</b>113.123.11.11</li>
-                <li class="list-group-item"><b>时间：</b>2020-01-01 10:01:01<b class="ms-2">IP：</b>113.123.11.11</li>
+                {foreach $logs as $log}
+                <li class="list-group-item"><b>时间：</b>{$log['create_time']}<b class="ms-2">IP：</b>{$log['ip']}</li>
+                {/foreach}
             </ul>
         </div>
     </div>
