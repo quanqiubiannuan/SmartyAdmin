@@ -1,26 +1,78 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>MySmarty</title>
-    <style type="text/css">
-        div{
-            height: 100px;
-            width: 300px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            margin-left: -150px;
-            margin-top: -50px;
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
-<div>
-    <h3>MySmarty框架</h3>
-    <h6>2018 ~ {date('Y')}</h6>
-    <a href="https://github.com/quanqiubiannuan/MySmarty" target="_blank">github</a>
+{extends file='layout.html'}
+{block name=content}
+<div class="d-flex">
+    <div class="d-block w-50">
+        <table class="table table-bordered mb-0">
+            <tr>
+                <th>版本</th>
+                <td>{$smartyAdminVersion}</td>
+            </tr>
+            <tr>
+                <th>PHP框架</th>
+                <td><a href="https://github.com/quanqiubiannuan/MySmarty" target="_blank">MySmarty</a></td>
+            </tr>
+            <tr>
+                <th>PHP框架版本</th>
+                <td>{$mysmartyVersion}</td>
+            </tr>
+            <tr>
+                <th>PHP版本</th>
+                <td>{$phpVersion}</td>
+            </tr>
+            <tr>
+                <th>PHP配置文件</th>
+                <td>{$iniPath}</td>
+            </tr>
+            <tr>
+                <th>PHP已启用扩展</th>
+                <td>bz2，curl</td>
+            </tr>
+            <tr>
+                <th>PHP已禁用函数</th>
+                <td>bz2，curl</td>
+            </tr>
+            <tr>
+                <th>Zend OPcache</th>
+                <td>已启用</td>
+            </tr>
+            <tr>
+                <th>JIT</th>
+                <td>已启用</td>
+            </tr>
+            <tr>
+                <th>IPv6</th>
+                <td>已启用</td>
+            </tr>
+            <tr>
+                <th>最大执行时间</th>
+                <td>30秒</td>
+            </tr>
+            <tr>
+                <th>最多文件上传个数</th>
+                <td>20</td>
+            </tr>
+            <tr>
+                <th>最大文件上传</th>
+                <td>5M</td>
+            </tr>
+            <tr>
+                <th>最大POST请求大小</th>
+                <td>30M</td>
+            </tr>
+        </table>
+    </div>
+    <div class="d-block w-50 ps-2">
+        <div class="card">
+            <div class="card-header">
+                登录日志
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><b>时间：</b>2020-01-01 10:01:01<b class="ms-2">IP：</b>113.123.11.11</li>
+                <li class="list-group-item"><b>时间：</b>2020-01-01 10:01:01<b class="ms-2">IP：</b>113.123.11.11</li>
+                <li class="list-group-item"><b>时间：</b>2020-01-01 10:01:01<b class="ms-2">IP：</b>113.123.11.11</li>
+                <li class="list-group-item"><b>时间：</b>2020-01-01 10:01:01<b class="ms-2">IP：</b>113.123.11.11</li>
+            </ul>
+        </div>
+    </div>
 </div>
-</body>
-</html>
+{/block}

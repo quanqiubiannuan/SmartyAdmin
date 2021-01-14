@@ -9,6 +9,9 @@ use library\mysmarty\Route;
 
 class Admin extends Controller
 {
+    // 关闭缓存
+    protected bool $myCache = false;
+
     /**
      * 用户登录
      */

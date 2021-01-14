@@ -10,6 +10,9 @@ use library\mysmarty\Controller;
  */
 class Backend extends Controller
 {
+    // 关闭缓存
+    protected bool $myCache = false;
+
     public function __construct()
     {
         parent::__construct();
