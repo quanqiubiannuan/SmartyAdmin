@@ -46,8 +46,12 @@ class Backend extends Controller
             $this->error('您无权访问此页面');
         }
         $currentPath = getPath();
-        var_dump(ROUTE);
-        exit();
+        if (empty($currentPath)) {
+            $currentPath = ROUTE['home']['uri'];
+        }
+        if (!in_array($currentPath, array_column($this->authRule, 'url'), true)) {
+            $this->error('您无权访问此页面');
+        }
         $this->assign('smartyMenu', $this->smartyMenu);
     }
 
