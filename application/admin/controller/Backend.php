@@ -16,14 +16,18 @@ class Backend extends Controller
     protected bool $myCache = false;
     // 当前登录用户信息
     protected array $smartyAdmin = [];
+    // 菜单组
     protected array $smartyMenu = [];
+    // 分组
     protected array $authGroup = [];
+    // 菜单规则
+    protected array $authRule = [];
 
     public function __construct()
     {
         parent::__construct();
         // 未登录跳转到登录页面
-        $smartyAdmin = getSession('smartyAdmin');
+        $smartyAdmin = getSession(config('app.smarty_admin_session', 'smartyAdmin'));
         if (empty($smartyAdmin)) {
             redirect('/admin/admin/login');
         }
@@ -31,13 +35,20 @@ class Backend extends Controller
         $this->smartyAdmin = $smartyAdmin;
         // 初始化当前用户组
         $authGroup = new AuthGroup();
-        if ($this->smartyAdmin['auth_group_id'] != 0) {
+        if (0 !== (int)$this->smartyAdmin['auth_group_id']) {
             $this->authGroup = $authGroup->eq('id', $this->smartyAdmin['auth_group_id'])
                 ->eq('status', 1)
                 ->find();
         }
         // 初始化菜单
         $this->smartyMenu = $this->getSmartyMenu();
+        if (empty($this->smartyMenu)) {
+            $this->error('您无权访问此页面');
+        }
+        $currentPath = getPath();
+        var_dump(ROUTE);
+        exit();
+        $this->assign('smartyMenu', $this->smartyMenu);
     }
 
     /**
@@ -48,22 +59,25 @@ class Backend extends Controller
     {
         $smartyMenu = [];
         $authRule = new AuthRule();
-        if (0 == $this->smartyAdmin['auth_group_id']) {
+        if (0 == (int)$this->smartyAdmin['auth_group_id']) {
             // 超级管理员
             $authRuleData = $authRule->order('sort_num', 'asc')
                 ->eq('status', 1)
+                ->eq('is_menu', 1)
                 ->select();
         } else if (!empty($this->authGroup)) {
             // 分组用户
             $authRuleData = $authRule->in('id', $this->authGroup['rules'])
                 ->order('sort_num', 'asc')
                 ->eq('status', 1)
+                ->eq('is_menu', 1)
                 ->select();
         } else {
             // 其它用户
             return [];
         }
         if (!empty($authRuleData)) {
+            $this->authRule = $authRuleData;
             $newAuthRuleData = [];
             foreach ($authRuleData as $v) {
                 $newAuthRuleData[$v['pid']][] = $v;

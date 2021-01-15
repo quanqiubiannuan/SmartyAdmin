@@ -54,7 +54,7 @@ class Admin extends Controller
                 $this->error('账号已停用');
             }
             $loginLog->addLoginLog($admin['id'], 1);
-            setSession('smartyAdmin', $admin);
+            setSession(config('app.smarty_admin_session', 'smartyAdmin'), $admin);
             redirect('/');
         }
         $this->display();
