@@ -27,7 +27,10 @@ class Backend extends Controller
     // 当前访问路径
     protected string $currentPath = '';
     // 当前访问的菜单
-    protected array $currentMenu = [];
+    protected array $currentMenu = [
+        'name' => '未知',
+        'icon' => 'fas fa-exclamation-triangle'
+    ];
 
     public function __construct()
     {

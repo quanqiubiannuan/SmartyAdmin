@@ -39,6 +39,7 @@ class Admin extends Controller
             // 判断账号当前60分钟内的失败次数
             $startTime = date('Y-m-d H:i:s', time() - 3600);
             if ($loginLog->eq('ip', getIp())
+                    ->eq('status', 2)
                     ->egt('create_time', $startTime)
                     ->count() >= 3) {
                 $this->error('登录失败');

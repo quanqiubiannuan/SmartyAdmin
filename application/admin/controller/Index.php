@@ -3,7 +3,9 @@
 namespace application\admin\controller;
 
 use application\admin\model\LoginLog;
+use library\mysmarty\Route;
 
+#[Route('/admin')]
 class Index extends Backend
 {
     /**
