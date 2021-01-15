@@ -18,72 +18,43 @@
             </div>
             <div class="side-body">
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item active">
-                        <a href="index.html">
-                            <i class="fas fa-tachometer-alt"></i><span>控制台</span>
-                        </a>
-                    </li>
-
-
+                    {foreach $smartyMenu as $menu}
+                    {if !empty($menu['children'])}
                     <li class="list-group-item">
-                        <a data-bs-toggle="collapse" href="javascript:void(0);" class="collapsed"
-                           data-bs-target="#child1" aria-expanded="false" aria-controls="child1">
-                            <i class="fas fa-cogs"></i><span>常规管理</span>
-                            <span class="pull-right-container">
-                                <i class="fas fa-angle-right"></i>
-                            </span>
+                        <a data-bs-toggle="collapse" href="javascript:void(0);" data-bs-target="#child{$menu['id']}" {if
+                           !$menu['expanded']}class="collapsed" aria-expanded="false"{else}aria-expanded="true"{/if}
+                        aria-controls="child{$menu['id']}">
+                        <i class="{$menu['icon']}"></i><span>{$menu['name']}</span>
+                        <span class="pull-right-container">
+                                    <i class="fas fa-angle-right"></i>
+                                </span>
                         </a>
-
-                        <ul class="list-group list-group-flush child-ul collapse" id="child1">
-                            <li class="list-group-item">
-                                <a href="profile.html">
-                                    <i class="fas fa-user-circle"></i><span>个人资料</span>
+                        <ul class="list-group list-group-flush child-ul collapse {if $menu['expanded']}show{/if}"
+                            id="child{$menu['id']}">
+                            {foreach $menu['children'] as $childMenu}
+                            <li class="list-group-item {if $menu['active']}active{/if}">
+                                <a href="{$childMenu['url']}">
+                                    <i class="{$childMenu['icon']}"></i><span>{$childMenu['name']}</span>
                                 </a>
                             </li>
-                            <li class="list-group-item">
-                                <a href="log.html">
-                                    <i class="fas fa-list-alt"></i><span>登录日志</span>
-                                </a>
-                            </li>
+                            {/foreach}
                         </ul>
                     </li>
-                    <li class="list-group-item">
-                        <a data-bs-toggle="collapse" href="javascript:void(0);" data-bs-target="#child2"
-                           aria-expanded="true" aria-controls="child2">
-                            <i class="fas fa-user-cog"></i><span>权限管理</span>
-                            <span class="pull-right-container">
-                                <i class="fas fa-angle-right"></i>
-                            </span>
+                    {else}
+                    <li class="list-group-item {if $menu['active']}active{/if}">
+                        <a href="{$menu['url']}">
+                            <i class="{$menu['icon']}"></i><span>{$menu['name']}</span>
                         </a>
-
-
-                        <ul class="list-group list-group-flush child-ul collapse show" id="child2">
-                            <li class="list-group-item">
-                                <a href="admin.html">
-                                    <i class="fas fa-users"></i><span>管理员列表</span>
-                                </a>
-                            </li>
-                            <li class="list-group-item">
-                                <a href="role.html">
-                                    <i class="fas fa-users-cog"></i><span>角色组</span>
-                                </a>
-                            </li>
-                            <li class="list-group-item">
-                                <a href="menu.html">
-                                    <i class="fas fa-bars"></i><span>菜单列表</span>
-                                </a>
-                            </li>
-                        </ul>
-
-
                     </li>
+                    {/if}
+                    {/foreach}
                 </ul>
             </div>
         </div>
         <div class="col-md-10 main p-0">
             <div class="main-head d-flex justify-content-between">
                 <div class="d-inline-flex align-items-center">
-                    <span class="ps-2 font-13"><i class="fas fa-tachometer-alt p-2"></i>控制台</span>
+                    <span class="ps-2 font-13"><i class="{$currentMenu['icon']} p-2"></i>{$currentMenu['name']}</span>
                 </div>
                 <div class="d-inline-flex">
                     <ul class="nav justify-content-end">
@@ -91,7 +62,12 @@
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                data-bs-toggle="dropdown"
                                aria-expanded="false">
-                                <i class="fas fa-user-circle"></i><span class="ps-2">admin</span>
+                                {if !empty($smartyAdmin['avatar'])}
+                                <img class="img-fluid" src="{$smartyAdmin['avatar']}" alt="{$smartyAdmin['name']}">
+                                {else}
+                                <i class="fas fa-user-circle"></i>
+                                {/if}
+                                <span class="ps-2">{$smartyAdmin['name']}</span>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user-circle me-2"></i>个人资料</a>
@@ -99,7 +75,7 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item" href="login.html"><i class="fas fa-sign-out-alt me-2"></i>退出</a>
+                                <li><a class="dropdown-item" href="{url}/login"><i class="fas fa-sign-out-alt me-2"></i>退出</a>
                                 </li>
                             </ul>
                         </li>

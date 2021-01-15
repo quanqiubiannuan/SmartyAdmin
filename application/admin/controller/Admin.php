@@ -15,8 +15,10 @@ class Admin extends Controller
     /**
      * 用户登录
      */
+    #[Route('/login')]
     public function login()
     {
+        deleteSession(config('app.smarty_admin_session', 'smartyAdmin'));
         if (isPost()) {
             $code = getPostString('code');
             if (empty($code)) {
@@ -54,6 +56,7 @@ class Admin extends Controller
                 $this->error('账号已停用');
             }
             $loginLog->addLoginLog($admin['id'], 1);
+            unset($admin['password']);
             setSession(config('app.smarty_admin_session', 'smartyAdmin'), $admin);
             redirect('/');
         }
