@@ -4,7 +4,7 @@ require_once ROOT_DIR . '/library/mysmarty/Start.php';
 //定义默认模块
 define('MODULE', 'admin');
 //定义默认控制器
-define('CONTROLLER', 'Index');
+define('CONTROLLER', 'Admin');
 //定义默认方法
 define('ACTION', 'home');
 
