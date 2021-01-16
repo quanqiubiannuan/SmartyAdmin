@@ -94,4 +94,11 @@ class Admin extends Backend
         }
         $this->display();
     }
+
+    /**
+     * 登录日志
+     */
+    public function log(){
+        $this->display();
+    }
 }
