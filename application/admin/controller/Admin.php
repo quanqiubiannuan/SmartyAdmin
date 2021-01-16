@@ -45,6 +45,23 @@ class Admin extends Backend
      */
     public function profile()
     {
+        if ($this->isSuperAdmin) {
+            $groupName = '超级管理员';
+        } else {
+            $groupName = $this->authGroup['name'];
+        }
+        $this->assign('groupName', $groupName);
+        $this->display();
+    }
+
+    /**
+     * 更新用户资料
+     */
+    public function updateProfile()
+    {
+        if (isPost()){
+
+        }
         $this->display();
     }
 }

@@ -27,10 +27,7 @@ class Backend extends Controller
     // 当前访问路径
     protected string $currentPath = '';
     // 当前访问的菜单
-    protected array $currentMenu = [
-        'name' => '未知',
-        'icon' => 'fas fa-exclamation-triangle'
-    ];
+    protected array $currentMenu = [];
 
     public function __construct()
     {
@@ -58,6 +55,10 @@ class Backend extends Controller
             $currentPath = ROUTE['home']['uri'];
         }
         $this->currentPath = $currentPath;
+        // 如果设置了上一个菜单，则直接使用
+        if (getSession('lastCurrentMenu')) {
+            $this->currentMenu = getSession('lastCurrentMenu');
+        }
         // 初始化菜单
         $this->smartyMenu = $this->getSmartyMenu();
         if (empty($this->smartyMenu)) {
@@ -84,19 +85,17 @@ class Backend extends Controller
         $authRule = new AuthRule();
         if ($this->isSuperAdmin) {
             // 超级管理员
-            $authRuleData = $authRule->field('id,url,name,icon,pid')
+            $authRuleData = $authRule->field('id,url,name,icon,pid,is_menu')
                 ->order('sort_num', 'asc')
                 ->eq('status', 1)
-                ->eq('is_menu', 1)
                 ->select();
         } else {
             if (!empty($this->authGroup)) {
                 // 分组用户
                 $authRuleData = $authRule->in('id', $this->authGroup['rules'])
-                    ->field('id,url,name,icon,pid')
+                    ->field('id,url,name,icon,pid,is_menu')
                     ->order('sort_num', 'asc')
                     ->eq('status', 1)
-                    ->eq('is_menu', 1)
                     ->select();
             } else {
                 // 其它用户
@@ -107,11 +106,12 @@ class Backend extends Controller
             $this->authRule = $authRuleData;
             $newAuthRuleData = [];
             foreach ($authRuleData as $v) {
+                if (1 !== (int)$v['is_menu']) {
+                    continue;
+                }
                 if ($this->currentPath === $v['url']) {
+                    setSession('lastCurrentMenu', $v);
                     $this->currentMenu = $v;
-                    $v['active'] = true;
-                } else {
-                    $v['active'] = false;
                 }
                 $newAuthRuleData[$v['pid']][] = $v;
             }

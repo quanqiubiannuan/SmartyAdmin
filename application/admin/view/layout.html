@@ -7,7 +7,7 @@
     <link href="{url}/css/fontawesome.min.css" rel="stylesheet">
     <link href="{url}/css/solid.min.css" rel="stylesheet">
     <link href="{url}/css/smartyadmin.min.css" rel="stylesheet">
-    <title>{block name=title}{if !empty($authName)}{$authName}-{/if}{/block}{#title#}</title>
+    <title>{#title#}</title>
 </head>
 <body>
 <div class="container-fluid h-100">
@@ -31,7 +31,7 @@
                         <ul class="list-group list-group-flush child-ul collapse {if $menu['expanded']}show{/if}"
                             id="child{$menu['id']}">
                             {foreach $menu['children'] as $childMenu}
-                            <li class="list-group-item {if $menu['active']}active{/if}">
+                            <li class="list-group-item {if $childMenu['id'] == $currentMenu['id']}active{/if}">
                                 <a href="{url}/{$childMenu['url']}">
                                     <i class="{$childMenu['icon']}"></i><span>{$childMenu['name']}</span>
                                 </a>
@@ -40,7 +40,7 @@
                         </ul>
                     </li>
                     {else}
-                    <li class="list-group-item {if $menu['active']}active{/if}">
+                    <li class="list-group-item {if $menu['id'] == $currentMenu['id']}active{/if}">
                         <a href="{url}/{$menu['url']}">
                             <i class="{$menu['icon']}"></i><span>{$menu['name']}</span>
                         </a>
@@ -69,7 +69,7 @@
                                 <span class="ps-2">{$smartyAdmin['name']}</span>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user-circle me-2"></i>个人资料</a>
+                                <li><a class="dropdown-item" href="{url}/admin/profile"><i class="fas fa-user-circle me-2"></i>个人资料</a>
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider">
