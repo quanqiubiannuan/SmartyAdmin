@@ -6,6 +6,7 @@ use application\admin\model\LoginLog;
 use library\mysmarty\Captcha;
 use library\mysmarty\Controller;
 use library\mysmarty\Route;
+use library\mysmarty\Session;
 
 /**
  * 无需登录的控制器
@@ -19,7 +20,7 @@ class Index extends Controller
     #[Route('/login')]
     public function login()
     {
-        deleteSession(config('app.smarty_admin_session', 'smartyAdmin'));
+        Session::getInstance()->clear();
         if (isPost()) {
             $code = getPostString('code');
             if (empty($code)) {

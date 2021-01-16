@@ -28,7 +28,9 @@
                 <td>{$extensions}</td>
             </tr>
             <tr>
-                <td colspan="2"><a href="{url}/admin/phpinfo" target="_blank">phpinfo()</a></td>
+                <td colspan="2">
+                    {smartyAdminHref('admin/phpinfo','phpinfo','btn-link','_blank')}
+                </td>
             </tr>
         </table>
     </div>

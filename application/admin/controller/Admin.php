@@ -4,6 +4,8 @@ namespace application\admin\controller;
 
 use application\admin\model\LoginLog;
 use library\mysmarty\Route;
+use library\mysmarty\Session;
+use library\mysmarty\Upload;
 
 #[Route('/admin')]
 class Admin extends Backend
@@ -59,8 +61,36 @@ class Admin extends Backend
      */
     public function updateProfile()
     {
-        if (isPost()){
-
+        if (isPost()) {
+            $updateData = [];
+            $name = getPostString('name');
+            if (empty($name)) {
+                $this->error('用户名不能为空');
+            }
+            $updateData['name'] = $name;
+            $password = getPostString('password');
+            if (!empty($password)) {
+                $len = mb_strlen($password, 'utf-8');
+                if (preg_match('/[^a-z0-9]/i', $password) || $len < 6 || $len > 20) {
+                    $this->error('密码由6-20位字母或数字组成');
+                }
+                $updateData['password'] = password_hash($password, PASSWORD_DEFAULT);
+            }
+            $gender = getPostString('gender');
+            if (!in_array($gender, [0, 1, 2])) {
+                $this->error('性别错误');
+            }
+            $updateData['gender'] = $gender;
+            $avatar = Upload::getInstance()->move('avatar');
+            if (!empty($avatar)) {
+                $updateData['avatar'] = $avatar;
+            }
+            $admin = new \application\admin\model\Admin();
+            if ($admin->eq('id', $this->smartyAdmin['id'])->update($updateData)) {
+                Session::getInstance()->clear();
+                $this->success('更新成功', '/login');
+            }
+            $this->error('更新失败');
         }
         $this->display();
     }

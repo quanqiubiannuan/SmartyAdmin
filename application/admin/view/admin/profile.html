@@ -2,13 +2,13 @@
 {block name=content}
 <div class="d-flex flex-column justify-content-center align-items-start">
     <figure class="figure">
-        <span class="font-100 text-info">
-            {if !empty($smartyAdmin['avatar'])}
-                 <img class="img-fluid" src="{$smartyAdmin['avatar']}" alt="{$smartyAdmin['name']}">
-            {else}
+        {if !empty($smartyAdmin['avatar'])}
+            <img class="img-fluid mb-2" src="{$smartyAdmin['avatar']}" alt="{$smartyAdmin['name']}">
+        {else}
+            <span class="font-100 text-info">
                 <i class="fas fa-user-circle"></i>
-            {/if}
-        </span>
+            </span>
+        {/if}
         <figcaption class="figure-caption text-center">{$smartyAdmin['name']}</figcaption>
     </figure>
     <div class="d-block text-secondary">
@@ -27,7 +27,7 @@
         <b>更新时间：</b>{$smartyAdmin['update_time']}
     </div>
     <div class="d-block text-secondary mt-2">
-        <a href="{url}/admin/update_profile" class="btn-link">更新资料</a>
+        {smartyAdminHref('admin/update_profile','更新资料')}
     </div>
 </div>
 {/block}
