@@ -57,6 +57,13 @@
                 </div>
                 <div class="d-inline-flex">
                     <ul class="nav justify-content-end">
+                        {if !$isMenuPage}
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:history.back();">
+                                <i class="fas fa-backward"></i><span class="ps-2">返回</span>
+                            </a>
+                        </li>
+                        {/if}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                data-bs-toggle="dropdown"
@@ -69,7 +76,8 @@
                                 <span class="ps-2">{$smartyAdmin['name']}</span>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="{url}/admin/profile"><i class="fas fa-user-circle me-2"></i>个人资料</a>
+                                <li>
+                                    <a class="dropdown-item" href="{url}/admin/profile"><i class="fas fa-user-circle me-2"></i>个人资料</a>
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider">

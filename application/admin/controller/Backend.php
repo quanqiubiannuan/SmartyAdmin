@@ -28,6 +28,8 @@ class Backend extends Controller
     protected string $currentPath = '';
     // 当前访问的菜单
     protected array $currentMenu = [];
+    // 当前页面是否为菜单页面
+    protected bool $isMenuPage = false;
 
     public function __construct()
     {
@@ -70,9 +72,11 @@ class Backend extends Controller
                 $this->error('您无权访问此页面');
             }
         }
+        // 分配相关变量到页面
         $this->assign('smartyMenu', $this->smartyMenu);
         $this->assign('currentMenu', $this->currentMenu);
         $this->assign('smartyAdmin', $this->smartyAdmin);
+        $this->assign('isMenuPage', $this->isMenuPage);
     }
 
     /**
@@ -112,6 +116,7 @@ class Backend extends Controller
                 if ($this->currentPath === $v['url']) {
                     setSession('lastCurrentMenu', $v);
                     $this->currentMenu = $v;
+                    $this->isMenuPage = true;
                 }
                 $newAuthRuleData[$v['pid']][] = $v;
             }
