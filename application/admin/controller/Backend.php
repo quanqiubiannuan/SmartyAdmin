@@ -44,6 +44,7 @@ class Backend extends Controller
         if (0 === (int)$this->smartyAdmin['auth_group_id']) {
             $this->isSuperAdmin = true;
         }
+        setSession('isSuperAdmin', $this->isSuperAdmin);
         // 初始化当前用户组
         if (!$this->isSuperAdmin) {
             $authGroup = new AuthGroup();
@@ -68,9 +69,11 @@ class Backend extends Controller
         }
         // 判断用户是否有权限
         if (!$this->isSuperAdmin) {
-            if (!in_array($this->currentPath, array_column($this->authRule, 'url'), true)) {
+            $authRuleUrlData = array_column($this->authRule, 'url');
+            if (!in_array($this->currentPath, $authRuleUrlData, true)) {
                 $this->error('您无权访问此页面');
             }
+            setSession('authRuleUrlData', $authRuleUrlData);
         }
         // 分配相关变量到页面
         $this->assign('smartyMenu', $this->smartyMenu);
