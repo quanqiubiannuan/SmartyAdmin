@@ -27,11 +27,13 @@
                 <th>已启用扩展</th>
                 <td>{$extensions}</td>
             </tr>
+            {if auth('admin/phpinfo')}
             <tr>
                 <td colspan="2">
                     {smartyAdminHref('admin/phpinfo','phpinfo','btn-link','_blank')}
                 </td>
             </tr>
+            {/if}
         </table>
     </div>
     <div class="d-block w-50 ps-2">

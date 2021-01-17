@@ -1,7 +1,9 @@
 {extends file='layout.html'}
 {block name=content}
 <div class="d-block mb-3">
-    <a href="" class="btn btn-outline-primary align-top me-2"><i class="fas fa-plus me-2"></i>添加</a>
+    {if auth('admin/add')}
+    <a href="{url}/admin/add" class="btn btn-outline-primary align-top me-2"><i class="fas fa-plus me-2"></i>添加</a>
+    {/if}
     <form method="get" action="{href}" class="row row-cols-lg-auto g-2 align-items-center d-inline-flex">
         <div class="col-12">
             <div class="input-group">

@@ -215,6 +215,15 @@ class BackendCurd extends Backend
         if (!$this->allowAddMethod) {
             $this->error('您无权访问此页面');
         }
+        if (isPost()){
+            $adminVa = new \application\admin\validate\Admin();
+            if ($adminVa->run() === false){
+                var_dump($adminVa->getError());
+            }
+            var_dump($_POST);
+            exit();
+        }
+        $this->display();
     }
 
     /**

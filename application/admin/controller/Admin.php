@@ -11,8 +11,11 @@ use library\mysmarty\Upload;
 class Admin extends BackendCurd
 {
     protected array $searchCondition = ['name', 'gender' => '='];
-    protected array $joinCondition = ['auth_group','auth_group.id=admin.auth_group_id'];
+    protected array $joinCondition = ['auth_group', 'auth_group.id=admin.auth_group_id'];
     protected string $field = 'admin.*,auth_group.name as auth_group_name';
+    protected bool $allowAddMethod = true;
+    protected bool $allowEditMethod = true;
+    protected bool $allowDeleteMethod = true;
 
     /**
      * 后台首页
