@@ -126,12 +126,14 @@ class BackendCurd extends Backend
                 }
                 // 传过来的搜索值
                 if (!isset($_GET[$searchStr])) {
+                    $this->assign($searchStr, '');
                     continue;
                 }
                 $searchVal = match ($searchType) {
                     's' => getString($searchStr),
                     'i' => getInt($searchStr)
                 };
+                $this->assign($searchStr, $searchVal);
                 $searchParam .= '&' . $searchStr . '=' . $searchVal;
                 // 修改查询字段
                 if (!str_contains($searchStr, '|')) {

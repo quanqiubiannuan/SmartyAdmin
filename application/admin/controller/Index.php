@@ -14,6 +14,9 @@ use library\mysmarty\Session;
  */
 class Index extends Controller
 {
+    // 关闭缓存
+    protected bool $myCache = false;
+
     /**
      * 用户登录
      */

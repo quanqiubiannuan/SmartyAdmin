@@ -8,10 +8,11 @@ use library\mysmarty\Session;
 use library\mysmarty\Upload;
 
 #[Route('/admin')]
-class Admin extends Backend
+class Admin extends BackendCurd
 {
-    // 关闭缓存
-    protected bool $myCache = false;
+    protected array $searchCondition = ['name', 'gender' => '='];
+    protected array $joinCondition = ['auth_group','auth_group.id=admin.auth_group_id'];
+    protected string $field = 'admin.*,auth_group.name as auth_group_name';
 
     /**
      * 后台首页
@@ -77,7 +78,7 @@ class Admin extends Backend
                 $updateData['password'] = password_hash($password, PASSWORD_DEFAULT);
             }
             $gender = getPostString('gender');
-            if (!in_array($gender, [0, 1, 2])) {
+            if (!in_array($gender, [1, 2])) {
                 $this->error('性别错误');
             }
             $updateData['gender'] = $gender;
