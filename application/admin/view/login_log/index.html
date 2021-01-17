@@ -5,42 +5,26 @@
         <thead>
         <tr>
             <th scope="col">ID</th>
+            <th scope="col">管理员</th>
             <th scope="col">时间</th>
             <th scope="col">IP</th>
             <th scope="col">状态</th>
-            <th scope="col">原因</th>
             <th scope="col">浏览器</th>
         </tr>
         </thead>
         <tbody>
+        {foreach $list['data'] as $item}
         <tr>
-            <th scope="row">1</th>
-            <td>2020-02-02 10:19:11</td>
-            <td>113.112.113.112</td>
-            <td>成功</td>
-            <td>密码错误</td>
-            <td>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)
-                Chrome/87.0.4280.88 Safari/537.36
-            </td>
+            <th scope="row">{$item['id']}</th>
+            <th>{$item['admin_name']}</th>
+            <td>{$item['create_time']}</td>
+            <td>{$item['ip']}</td>
+            <td>{if $item['status'] == 1}成功{else}失败{/if}</td>
+            <td>{$item['user_agent']}</td>
         </tr>
+        {/foreach}
         </tbody>
     </table>
 </div>
-<nav aria-label="Page navigation example">
-    <ul class="pagination mt-3 mb-0 justify-content-end">
-        <li class="page-item">
-            <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-            </a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-            </a>
-        </li>
-    </ul>
-</nav>
+{include file='page.html'}
 {/block}

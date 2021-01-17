@@ -7,7 +7,7 @@ use library\mysmarty\Route;
 #[Route('/log')]
 class LoginLog extends BackendCurd
 {
-    protected int $totalNum = 3;
-    protected string $field = 'id';
-    protected array $joinCondition = ['admin','admin.id=login_log.admin_id'];
+    protected array $joinCondition = ['admin', 'admin.id=login_log.admin_id'];
+    protected int $dataType = 3;
+    protected string $field = 'login_log.*,admin.name as admin_name';
 }
