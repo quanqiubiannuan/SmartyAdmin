@@ -163,11 +163,7 @@ class BackendCurd extends Backend
                 $this->error('数据关联字段不能为空');
             }
             // 修改关联字段
-            if (!str_contains($this->dataField, '|')) {
-                $this->dataField = $this->table . '.' . $this->dataField;
-            } else {
-                $this->dataField = str_ireplace('|', '.', $this->dataField);
-            }
+            $this->dataField = $this->table . '.' . $this->dataField;
             switch ($this->dataType) {
                 case 2:
                     // 仅查询自己的数据
@@ -215,9 +211,9 @@ class BackendCurd extends Backend
         if (!$this->allowAddMethod) {
             $this->error('您无权访问此页面');
         }
-        if (isPost()){
+        if (isPost()) {
             $adminVa = new \application\admin\validate\Admin();
-            if ($adminVa->run() === false){
+            if ($adminVa->run() === false) {
                 var_dump($adminVa->getError());
             }
             var_dump($_POST);

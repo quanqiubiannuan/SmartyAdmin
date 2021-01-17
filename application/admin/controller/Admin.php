@@ -16,6 +16,7 @@ class Admin extends BackendCurd
     protected bool $allowAddMethod = true;
     protected bool $allowEditMethod = true;
     protected bool $allowDeleteMethod = true;
+    protected int $dataType = 3;
 
     /**
      * 后台首页
