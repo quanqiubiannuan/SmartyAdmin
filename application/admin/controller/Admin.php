@@ -99,4 +99,31 @@ class Admin extends BackendCurd
         }
         $this->display();
     }
+
+    /**
+     * 添加
+     */
+    public function add()
+    {
+        if (isPost()) {
+            $data = $_POST;
+            $validate = new \application\admin\validate\Admin();
+            if ($validate->scene('add')->check($data) === false) {
+                $this->error($validate->getError());
+            }
+            $avatar = Upload::getInstance()->move('avatar');
+            if (empty($avatar)) {
+                $avatar = '';
+            }
+            $data['avatar'] = $avatar;
+            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+            $admin = new \application\admin\model\Admin();
+            $num = $admin->allowField(true)->add($data);
+            if ($num > 0) {
+                $this->success('添加成功');
+            }
+            $this->error('添加失败');
+        }
+        $this->display();
+    }
 }

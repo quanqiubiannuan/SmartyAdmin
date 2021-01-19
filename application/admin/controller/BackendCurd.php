@@ -38,6 +38,9 @@ class BackendCurd extends Backend
     protected int $dataType = 1;
     // 关联的字段ID。$dataType 不为1时，必须填写
     protected string $dataField = 'admin_id';
+    // 表单验证文件
+    // 比如：\application\admin\validate\Admin::class;
+    protected string $validate;
     // 是否允许执行列表方法
     protected bool $allowIndexMethod = true;
     // 是否允许执行添加方法
@@ -212,12 +215,20 @@ class BackendCurd extends Backend
             $this->error('您无权访问此页面');
         }
         if (isPost()) {
-            $adminVa = new \application\admin\validate\Admin();
-            if ($adminVa->run() === false) {
-                var_dump($adminVa->getError());
+            if (!empty($this->validate)) {
+                $validate = new $this->validate;
+                if ($validate->scene('add')->check($_POST) === false) {
+                    $this->error($validate->getError());
+                }
             }
-            var_dump($_POST);
-            exit();
+            $num = Model::getInstance()->setDatabase($this->database)
+                ->setTable($this->table)
+                ->allowField(true)
+                ->add($_POST);
+            if ($num > 0) {
+                $this->success('添加成功');
+            }
+            $this->error('添加失败');
         }
         $this->display();
     }

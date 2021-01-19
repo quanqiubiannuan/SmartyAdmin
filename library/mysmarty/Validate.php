@@ -1,44 +1,61 @@
 <?php
-/**
- * Date: 2019/5/7
- * Time: 10:34
- */
 
 namespace library\mysmarty;
 
+/**
+ * 验证类
+ * @package library\mysmarty
+ */
 class Validate
 {
-    //验证规则
+    // 验证规则
     protected array $rule = [];
+    // 当前错误
     protected string $error = '';
+    // 字段中文对应
     private array $labels = [];
-    protected string $validateField = '';
+    // 验证场景
+    protected array $scene;
+    // 当前场景
+    private string $currentScene;
+    // 当前验证的字段
+    private string $validateField;
 
     /**
-     * 初始化变量
+     * 验证场景
+     * @param string $scene 场景
      * @return static
      */
-    final public function init(): static
+    final public function scene(string $scene): static
     {
-        $this->rule = [];
-        $this->error = '';
-        $this->labels = [];
-        $this->validateField = '';
+        $this->currentScene = $scene;
         return $this;
     }
 
     /**
-     * 验证规则
-     * @param string $field 需要验证的表单字段名称，多个逗号分隔
+     * 验证数据
+     * @param array $data 待验证的数据
      * @return bool
      */
-    final public function run(string $field = ''): bool
+    final public function check(array $data): bool
     {
         if (empty($this->rule)) {
             return true;
         }
         $allRule = [];
         $allLabel = [];
+        // 待验证的字段列表
+        $validateFields = [];
+        if (!empty($this->currentScene)) {
+            $validateFields = $this->scene[$this->currentScene] ?? [];
+            if (empty($validateFields)) {
+                $this->setError('验证场景不存在');
+                return false;
+            }
+            if (is_string($validateFields)) {
+                $validateFields = explode(',', $validateFields);
+            }
+        }
         foreach ($this->rule as $k => $v) {
             $pos = strpos($k, '@');
             if ($pos !== false) {
@@ -47,41 +64,28 @@ class Validate
             } else {
                 $k1 = $k;
             }
+            if (!empty($validateFields) && !in_array($k1, $validateFields)) {
+                continue;
+            }
             $allRule[$k1] = $v;
         }
         $this->labels = $allLabel;
-        if (empty($field)) {
-            $fieldArr = array_merge(array_keys($_GET), array_keys($_POST), array_keys($_FILES));
-        } else {
-            $fieldArr = explode(',', $field);
-        }
-        if (empty($fieldArr)) {
-            return true;
-        }
-        foreach ($fieldArr as $f) {
-            if (!isset($allRule[$f])) {
-                continue;
+        foreach ($allRule as $f => $rule) {
+            $label = $this->getLabel($f);
+            if (!isset($data[$f])) {
+                $this->setError($label . '不存在');
+                return false;
             }
             $this->validateField = $f;
-            $rule = $allRule[$f];
             $ruleArr = explode('|', $rule);
             foreach ($ruleArr as $r) {
+                $r = myTrim($r);
                 if (empty($r)) {
                     continue;
                 }
                 $rArr = explode(':', $r);
                 $rParam = $rArr[1] ?? '';
-                $label = $this->getLabel($f);
-                if (isset($_GET[$f])) {
-                    $result = call_user_func_array([$this, $rArr[0]], [&$_GET[$f], $label, $rParam]);
-                } else if (isset($_POST[$f])) {
-                    $result = call_user_func_array([$this, $rArr[0]], [&$_POST[$f], $label, $rParam]);
-                } else if (isset($_FILES[$f])) {
-                    $result = call_user_func_array([$this, $rArr[0]], [&$_FILES[$f], $label, $rParam]);
-                } else {
-                    $this->setError('不支持非GET、POST、FILES方式的传输');
-                    $result = false;
-                }
+                $result = call_user_func_array([$this, $rArr[0]], [&$data[$f], $label, $rParam]);
                 if (!$result) {
                     return false;
                 }
