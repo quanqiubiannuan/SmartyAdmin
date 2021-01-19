@@ -159,6 +159,7 @@ class Backend extends Controller
         $authGroup = new AuthGroup();
         $authGroupData = $authGroup->field('id,name,pid')
             ->eq('status', 1)
+            ->order('pid asc,id asc')
             ->select();
         if ($this->isSuperAdmin) {
             return $authGroupData;
