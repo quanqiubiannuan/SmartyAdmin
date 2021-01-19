@@ -120,7 +120,7 @@ class Admin extends BackendCurd
             $admin = new \application\admin\model\Admin();
             $num = $admin->allowField(true)->add($data);
             if ($num > 0) {
-                $this->success('添加成功');
+                $this->success('添加成功', getAbsoluteUrl() . '/' . $this->currentMenu['url']);
             }
             $this->error('添加失败');
         }

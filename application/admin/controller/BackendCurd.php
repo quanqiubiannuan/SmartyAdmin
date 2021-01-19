@@ -226,7 +226,7 @@ class BackendCurd extends Backend
                 ->allowField(true)
                 ->add($_POST);
             if ($num > 0) {
-                $this->success('添加成功');
+                $this->success('添加成功', getAbsoluteUrl() . '/' . $this->currentMenu['url']);
             }
             $this->error('添加失败');
         }
