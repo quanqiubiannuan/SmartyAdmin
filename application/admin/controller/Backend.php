@@ -149,4 +149,77 @@ class Backend extends Controller
         }
         return $tree;
     }
+
+    /**
+     * 获取当前角色下的所有角色，不包括当前角色
+     * @return array
+     */
+    protected function getAllAuthGroup(): array
+    {
+        $authGroup = new AuthGroup();
+        $authGroupData = $authGroup->field('id,name,pid')
+            ->eq('status', 1)
+            ->select();
+        if ($this->isSuperAdmin) {
+            return $authGroupData;
+        }
+        $authGroupIds = [];
+        $data = [];
+        foreach ($authGroupData as $v) {
+            if ($this->smartyAdmin['auth_group_id'] === $v['pid'] || in_array($v['pid'], $authGroupIds)) {
+                $data[] = $v;
+            }
+        }
+        return $data;
+    }
+
+    /**
+     * 返回具有层级的权限数组（获取当前角色下的所有角色，不包括当前角色）
+     * @return array
+     */
+    protected function getLevelAuthGroup(): array
+    {
+        return $this->dealAuthGroup($this->getAllAuthGroup(), $this->smartyAdmin['auth_group_id']);
+    }
+
+    /**
+     * 将数据转为层级结构
+     * @param array $data 原始数组数据
+     * @param int $pid 第一个父级id
+     * @param int $level 级别
+     * @return array
+     */
+    protected function dealAuthGroup(array $data, int $pid = 0, int $level = 0): array
+    {
+        static $tree;
+        foreach ($data as $v) {
+            if ($pid === (int)$v['pid']) {
+                $v['level'] = $level + 1;
+                $tree[] = $v;
+                $this->dealAuthGroup($data, $v['id'], $v['level']);
+            }
+        }
+        return $tree;
+    }
+
+    /**
+     * 获取当前角色下的所有用户id（不包括当前角色，包括当前角色下的角色，包括自己的id）
+     * @return array
+     */
+    protected function getAdminIds(): array
+    {
+        $adminIds = [$this->smartyAdmin['id']];
+        $authGroupData = $this->getAllAuthGroup();
+        $authGroupIds = array_column($authGroupData, 'id');
+        if (!empty($authGroupIds)) {
+            $admin = new \application\admin\model\Admin();
+            $result = $admin->in('auth_group_id', $authGroupIds)
+                ->field('id')
+                ->select();
+            if (!empty($result)) {
+                $adminIds = array_merge($adminIds, array_column($result, 'id'));
+            }
+        }
+        return $adminIds;
+    }
 }

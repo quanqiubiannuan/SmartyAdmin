@@ -124,6 +124,8 @@ class Admin extends BackendCurd
             }
             $this->error('添加失败');
         }
+        var_dump($this->getLevelAuthGroup());
+        exit();
         $this->display();
     }
 }

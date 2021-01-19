@@ -175,22 +175,7 @@ class BackendCurd extends Backend
                 case 3:
                     // 查询自己的数据和角色下用户的数据
                     if (!$this->isSuperAdmin) {
-                        $adminIds = [$this->smartyAdmin['id']];
-                        $authGroupIds = [];
-                        foreach ($this->authGroup as $v) {
-                            if ($this->smartyAdmin['auth_group_id'] === $v['pid'] || in_array($v['pid'], $authGroupIds)) {
-                                $authGroupIds[] = $v['id'];
-                            }
-                        }
-                        if (!empty($authGroupIds)) {
-                            $admin = new \application\admin\model\Admin();
-                            $result = $admin->in('auth_group_id', $authGroupIds)
-                                ->field('id')
-                                ->select();
-                            if (!empty($result)) {
-                                $adminIds = array_merge($adminIds, array_column($result, 'id'));
-                            }
-                        }
+                        $adminIds = $this->getAdminIds();
                         $model->in($this->dataField, $adminIds);
                     }
                     break;
