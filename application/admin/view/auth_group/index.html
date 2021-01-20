@@ -18,10 +18,10 @@
         </tr>
         </thead>
         <tbody>
-        {foreach $list['data'] as $item}
+        {foreach $list as $item}
         <tr>
             <th scope="row">{$item['id']}</th>
-            <td>{$item['name']}</td>
+            <td class="text-start">{echoLevelStr($item['level'])}{$item['name']}</td>
             <td>{$item['create_time']}</td>
             <td>{$item['update_time']}</td>
             <td>{if $item['status'] == 1}正常{else}停用{/if}</td>
@@ -38,6 +38,5 @@
         </tbody>
     </table>
 </div>
-{include file='page.html'}
 {include file='modal.html'}
 {/block}

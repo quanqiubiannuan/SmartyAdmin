@@ -10,6 +10,16 @@ class AuthGroup extends BackendCurd
     protected int $dataType = 3;
 
     /**
+     * 首页查询
+     */
+    public function index()
+    {
+        $list = $this->dealAuthGroup($this->getAllAuthGroup('*', [1, 2]), $this->smartyAdmin['auth_group_id']);
+        $this->assign('list', $list);
+        $this->display();
+    }
+
+    /**
      * 添加
      */
     public function add()

@@ -178,13 +178,15 @@ class Backend extends Controller
 
     /**
      * 获取当前角色下的所有角色，不包括当前角色
+     * @param string $field 需要查询的字段
+     * @param array $status 取哪些状态的角色组
      * @return array
      */
-    protected function getAllAuthGroup(): array
+    protected function getAllAuthGroup(string $field = 'id,name,pid', array $status = [1]): array
     {
         $authGroup = new AuthGroup();
-        $authGroupData = $authGroup->field('id,name,pid')
-            ->eq('status', 1)
+        $authGroupData = $authGroup->field($field)
+            ->in('status', $status)
             ->order('pid asc,id asc')
             ->select();
         if ($this->isSuperAdmin) {
