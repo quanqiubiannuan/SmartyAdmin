@@ -200,16 +200,23 @@ class BackendCurd extends Backend
             $this->error('您无权访问此页面');
         }
         if (isPost()) {
+            $data = $_POST;
+            // 添加当前管理员id
+            if (1 !== $this->dataType) {
+                if (!isset($data[$this->dataField])) {
+                    $data[$this->dataField] = $this->smartyAdmin['id'];
+                }
+            }
             if (!empty($this->validate)) {
                 $validate = new $this->validate;
-                if ($validate->scene('add')->check($_POST) === false) {
+                if ($validate->scene('add')->check($data) === false) {
                     $this->error($validate->getError());
                 }
             }
             $num = Model::getInstance()->setDatabase($this->database)
                 ->setTable($this->table)
                 ->allowField(true)
-                ->add($_POST);
+                ->add($data);
             if ($num > 0) {
                 $this->success('添加成功', getAbsoluteUrl() . '/' . $this->currentMenu['url']);
             }
@@ -226,6 +233,53 @@ class BackendCurd extends Backend
         if (!$this->allowEditMethod) {
             $this->error('您无权访问此页面');
         }
+        $id = getInt($this->primaryKey);
+        if (empty($id)) {
+            $this->error('参数错误');
+        }
+        $data = $this->getDataByPrimaryKey($id);
+        if (empty($data)) {
+            $this->error('数据不存在');
+        }
+        if (isPost()) {
+            $data = $_POST;
+            // 添加当前管理员id
+            if (1 !== $this->dataType) {
+                if (!isset($data[$this->dataField])) {
+                    $data[$this->dataField] = $this->smartyAdmin['id'];
+                }
+            }
+            if (!empty($this->validate)) {
+                $validate = new $this->validate;
+                if ($validate->scene('edit')->check($data) === false) {
+                    $this->error($validate->getError());
+                }
+            }
+            $num = Model::getInstance()->setDatabase($this->database)
+                ->setTable($this->table)
+                ->allowField(true)
+                ->eq($this->primaryKey, $id)
+                ->update($data);
+            if ($num > 0) {
+                $this->success('编辑成功', getAbsoluteUrl() . '/' . $this->currentMenu['url']);
+            }
+            $this->error('编辑失败');
+        }
+        $this->assign('data', $data);
+        $this->display();
+    }
+
+    /**
+     * 根据主键查询数据
+     * @param int $id 值
+     * @return array
+     */
+    protected function getDataByPrimaryKey(int $id): array
+    {
+        return Model::getInstance()->setDatabase($this->database)
+            ->setTable($this->table)
+            ->eq($this->primaryKey, $id)
+            ->find();
     }
 
     /**
@@ -236,5 +290,18 @@ class BackendCurd extends Backend
         if (!$this->allowDeleteMethod) {
             $this->error('您无权访问此页面');
         }
+        $id = getString($this->primaryKey);
+        if (empty($id)) {
+            $this->error('参数错误');
+        }
+        $num = Model::getInstance()->setDatabase($this->database)
+            ->setTable($this->table)
+            ->allowField(true)
+            ->eq($this->primaryKey, $id)
+            ->delete();
+        if ($num > 0) {
+            $this->success('删除成功', getAbsoluteUrl() . '/' . $this->currentMenu['url']);
+        }
+        $this->error('删除失败');
     }
 }

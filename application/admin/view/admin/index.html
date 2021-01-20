@@ -56,8 +56,12 @@
             <td>{$item['update_time']}</td>
             <td>{if $item['status'] == 1}正常{else}停用{/if}</td>
             <td>
-                <a href="" class="btn-link me-2"><i class="fas fa-pencil-alt"></i></a>
-                <a href="" class="btn-link text-danger"><i class="fas fa-trash-alt"></i></a>
+                {if auth('admin/edit')}
+                <a href="{url}/admin/edit?id={$item['id']}" class="btn-link me-2"><i class="fas fa-pencil-alt"></i></a>
+                {/if}
+                {if auth('admin/delete')}
+                <a href="{url}/admin/delete?id={$item['id']}" class="btn-link text-danger"><i class="fas fa-trash-alt"></i></a>
+                {/if}
             </td>
         </tr>
         {/foreach}
