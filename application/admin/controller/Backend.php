@@ -58,10 +58,6 @@ class Backend extends Controller
             $currentPath = ROUTE['home']['uri'];
         }
         $this->currentPath = $currentPath;
-        // 如果设置了上一个菜单，则直接使用
-        if (getSession('lastCurrentMenu')) {
-            $this->currentMenu = getSession('lastCurrentMenu');
-        }
         // 初始化菜单
         $this->smartyMenu = $this->getSmartyMenu();
         if (empty($this->smartyMenu)) {
@@ -112,20 +108,50 @@ class Backend extends Controller
         if (!empty($authRuleData)) {
             $this->authRule = $authRuleData;
             $newAuthRuleData = [];
+            $pid = 0;
             foreach ($authRuleData as $v) {
-                if (1 !== (int)$v['is_menu']) {
-                    continue;
+                if (1 === (int)$v['is_menu']) {
+                    // 菜单规则
+                    if ($this->currentPath === $v['url']) {
+                        $this->currentMenu = $v;
+                        $this->isMenuPage = true;
+                        setSession('lastCurrentMenu', $v);
+                    }
+                    $newAuthRuleData[$v['pid']][] = $v;
+                } else {
+                    if ($this->currentPath === $v['url']) {
+                        $pid = $v['pid'];
+                    }
                 }
-                if ($this->currentPath === $v['url']) {
-                    setSession('lastCurrentMenu', $v);
-                    $this->currentMenu = $v;
-                    $this->isMenuPage = true;
-                }
-                $newAuthRuleData[$v['pid']][] = $v;
+            }
+            if (empty($this->currentMenu)) {
+                // 当前菜单为空，非菜单规则
+                $currentMenu = $this->getCurrentMenuByPath($authRuleData, $pid);
+                $this->currentMenu = $currentMenu ?: $authRuleData[0];
             }
             $smartyMenu = $this->generateTree($newAuthRuleData, $newAuthRuleData[0]);
         }
         return $smartyMenu;
+    }
+
+    /**
+     * 如果获取不到当前菜单，根据path获取上级菜单
+     * @param array $authRuleData 菜单规则
+     * @param int $pid 当前规则的pid
+     * @return array
+     */
+    private function getCurrentMenuByPath(array $authRuleData, int $pid): array
+    {
+        foreach ($authRuleData as $v) {
+            if ($pid == $v['id']) {
+                if ($v['is_menu']) {
+                    return $v;
+                } else {
+                    return $this->getCurrentMenuByPath($authRuleData, $v['pid']);
+                }
+            }
+        }
+        return getSession('lastCurrentMenu') ?: [];
     }
 
     /**
