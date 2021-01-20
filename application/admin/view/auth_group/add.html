@@ -1,0 +1,21 @@
+{extends file='layout.html'}
+{block name=content}
+<div class="d-block d-md-inline-block">
+    <form method="post" action="{href}" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="pid" class="form-label">上级角色</label>
+            <select class="form-select" id="pid" name="pid">
+                <option value="0">无</option>
+                {foreach $authGroups as $authGroup}
+                <option value="{$authGroup['id']}">{echoLevelStr($authGroup['level'])}{$authGroup['name']}</option>
+                {/foreach}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="name" class="form-label">角色名</label>
+            <input type="text" class="form-control" id="name" name="name" required="required">
+        </div>
+        <button type="submit" class="btn btn-primary">添加</button>
+    </form>
+</div>
+{/block}

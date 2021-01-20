@@ -44,7 +44,7 @@
         {foreach $list['data'] as $item}
         <tr>
             <th scope="row">{$item['id']}</th>
-            <th>{$item['name']}</th>
+            <td>{$item['name']}</td>
             <td>{if $item['gender'] == 0}未知{elseif $item['gender'] == 1}男{else}女{/if}</td>
             <td>
                 {if !empty($item['avatar'])}

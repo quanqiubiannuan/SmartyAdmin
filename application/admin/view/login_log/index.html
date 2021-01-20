@@ -16,7 +16,7 @@
         {foreach $list['data'] as $item}
         <tr>
             <th scope="row">{$item['id']}</th>
-            <th>{$item['admin_name']}</th>
+            <td>{$item['admin_name']}</td>
             <td>{$item['create_time']}</td>
             <td>{$item['ip']}</td>
             <td>{if $item['status'] == 1}成功{else}失败{/if}</td>
