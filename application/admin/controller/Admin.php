@@ -143,6 +143,9 @@ class Admin extends BackendCurd
         if (empty($data)) {
             $this->error('数据不存在');
         }
+        if (0 === (int)$data['auth_group_id']) {
+            $this->error('超级管理员无法编辑');
+        }
         $authGroups = $this->getLevelAuthGroup();
         if (isPost()) {
             $data = $_POST;
@@ -174,5 +177,37 @@ class Admin extends BackendCurd
         $this->assign('data', $data);
         $this->assign('authGroups', $authGroups);
         $this->display();
+    }
+
+    /**
+     * 删除
+     */
+    public function delete()
+    {
+        $id = getInt('id');
+        if (empty($id)) {
+            $this->error('参数错误');
+        }
+        $admin = new \application\admin\model\Admin();
+        $data = $admin->eq('id', $id)->find();
+        if (empty($data)) {
+            $this->error('数据不存在');
+        }
+        if (0 === (int)$data['auth_group_id']) {
+            $this->error('超级管理员无法删除');
+        }
+        if ($id == $this->smartyAdmin['id']) {
+            $this->error('无法删除自己');
+        }
+        $authGroups = $this->getLevelAuthGroup();
+        if (!$this->isSuperAdmin && !in_array($data['auth_group_id'], array_column($authGroups, 'id'))) {
+            $this->error('您没有权限删除此角色组用户');
+        }
+        $num = $admin->eq('id', $id)
+            ->delete();
+        if ($num > 0) {
+            $this->success('删除成功', getAbsoluteUrl() . '/' . $this->currentMenu['url']);
+        }
+        $this->error('删除失败');
     }
 }

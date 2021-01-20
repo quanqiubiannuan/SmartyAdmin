@@ -238,9 +238,6 @@ class BackendCurd extends Backend
             $this->error('参数错误');
         }
         $data = $this->getDataByPrimaryKey($id);
-        if (empty($data)) {
-            $this->error('数据不存在');
-        }
         if (isPost()) {
             $data = $_POST;
             // 添加当前管理员id
@@ -276,10 +273,31 @@ class BackendCurd extends Backend
      */
     protected function getDataByPrimaryKey(int $id): array
     {
-        return Model::getInstance()->setDatabase($this->database)
+        $data = Model::getInstance()->setDatabase($this->database)
             ->setTable($this->table)
             ->eq($this->primaryKey, $id)
             ->find();
+        if (empty($data)) {
+            $this->error('数据不存在');
+        }
+        if (!$this->isSuperAdmin && 1 !== $this->dataType) {
+            switch ($this->dataType) {
+                case 2:
+                    // 仅查询自己的数据
+                    if ($this->smartyAdmin['id'] != $data[$this->dataField]) {
+                        $this->error('您没有权限操作');
+                    }
+                    break;
+                case 3:
+                    // 查询自己的数据和角色下用户的数据
+                    $adminIds = $this->getAdminIds();
+                    if (!in_array($data[$this->dataField], $adminIds)) {
+                        $this->error('您没有权限操作');
+                    }
+                    break;
+            }
+        }
+        return $data;
     }
 
     /**
@@ -290,10 +308,11 @@ class BackendCurd extends Backend
         if (!$this->allowDeleteMethod) {
             $this->error('您无权访问此页面');
         }
-        $id = getString($this->primaryKey);
+        $id = getInt($this->primaryKey);
         if (empty($id)) {
             $this->error('参数错误');
         }
+        $this->getDataByPrimaryKey($id);
         $num = Model::getInstance()->setDatabase($this->database)
             ->setTable($this->table)
             ->allowField(true)
