@@ -3,6 +3,15 @@
 <div class="d-block d-md-inline-block">
     <form method="post" action="{href}" enctype="multipart/form-data">
         <div class="mb-3">
+            <label for="auth_group_id" class="form-label">角色组</label>
+            <select class="form-select" id="auth_group_id" name="auth_group_id">
+                <option value="-1">请选择</option>
+                {foreach $authGroups as $authGroup}
+                <option value="{$authGroup['id']}">{echoLevelStr($authGroup['level'])}{$authGroup['name']}</option>
+                {/foreach}
+            </select>
+        </div>
+        <div class="mb-3">
             <label for="name" class="form-label">用户名</label>
             <input type="text" class="form-control" id="name" name="name" required="required">
         </div>

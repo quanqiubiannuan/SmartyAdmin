@@ -105,11 +105,15 @@ class Admin extends BackendCurd
      */
     public function add()
     {
+        $authGroups = $this->getLevelAuthGroup();
         if (isPost()) {
             $data = $_POST;
             $validate = new \application\admin\validate\Admin();
             if ($validate->scene('add')->check($data) === false) {
                 $this->error($validate->getError());
+            }
+            if (!$this->isSuperAdmin && !in_array($data['auth_group_id'], array_column($authGroups, 'id'))) {
+                $this->error('您没有权限设置此角色组');
             }
             $avatar = Upload::getInstance()->move('avatar');
             if (empty($avatar)) {
@@ -124,8 +128,7 @@ class Admin extends BackendCurd
             }
             $this->error('添加失败');
         }
-        var_dump($this->getLevelAuthGroup());
-        exit();
+        $this->assign('authGroups', $authGroups);
         $this->display();
     }
 }

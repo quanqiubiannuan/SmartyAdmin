@@ -39,3 +39,17 @@ function smartyAdminHref(string $href, string $title, string $class = 'btn-link'
     }
     return '';
 }
+
+/**
+ * 按级别输出字符串
+ * @param int $level 分类级别
+ * @param string $str 要输出的字符串
+ * @return string
+ */
+function echoLevelStr(int $level, string $str = '-'): string
+{
+    if ($level <= 1) {
+        return '';
+    }
+    return str_repeat($str, ($level - 1) * 4);
+}
