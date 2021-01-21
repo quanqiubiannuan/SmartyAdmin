@@ -36,6 +36,10 @@ class AuthRule extends BackendCurd
             }
             if (empty($data['url'])) {
                 $data['url'] = null;
+            } else {
+                if (!in_array($data['url'], array_column(ROUTE, 'uri'))) {
+                    $this->error('链接不存在');
+                }
             }
             $authRule = new \application\admin\model\AuthRule();
             $num = $authRule->allowField(true)->add($data);
@@ -72,8 +76,12 @@ class AuthRule extends BackendCurd
             if (!$this->isSuperAdmin && !in_array($data['pid'], array_column($authRules, 'id'))) {
                 $this->error('您没有权限设置此规则');
             }
-            if (empty($data['url'])){
+            if (empty($data['url'])) {
                 $data['url'] = null;
+            } else {
+                if (!in_array($data['url'], array_column(ROUTE, 'uri'))) {
+                    $this->error('链接不存在');
+                }
             }
             $num = $authRule->eq('id', $id)
                 ->update($data);
