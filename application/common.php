@@ -46,10 +46,10 @@ function smartyAdminHref(string $href, string $title, string $class = 'btn-link'
  * @param string $str 要输出的字符串
  * @return string
  */
-function echoLevelStr(int $level, string $str = '-'): string
+function echoLevelStr(int $level, string $str = '　'): string
 {
     if ($level <= 1) {
         return '';
     }
-    return str_repeat($str, ($level - 1) * 4);
+    return str_repeat($str, $level - 1);
 }

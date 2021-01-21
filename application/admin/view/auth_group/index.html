@@ -11,8 +11,6 @@
         <tr>
             <th scope="col">ID</th>
             <th scope="col">角色名</th>
-            <th scope="col">创建时间</th>
-            <th scope="col">更新时间</th>
             <th scope="col">状态</th>
             <th scope="col">操作</th>
         </tr>
@@ -22,8 +20,6 @@
         <tr>
             <th scope="row">{$item['id']}</th>
             <td class="text-start">{echoLevelStr($item['level'])}{$item['name']}</td>
-            <td>{$item['create_time']}</td>
-            <td>{$item['update_time']}</td>
             <td>{if $item['status'] == 1}正常{else}停用{/if}</td>
             <td>
                 {if auth('admin/edit')}

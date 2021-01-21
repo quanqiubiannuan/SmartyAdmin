@@ -27,7 +27,7 @@ a {
 
 
 .side {
-    background-color: #027581;
+    background-color: #222d32;
     min-height: 100%;
     color: #fff;
     overflow: hidden;
@@ -45,8 +45,7 @@ a {
 .side .side-body .list-group-item {
     position: relative;
     padding: 0;
-    background-color: #027581;
-    border: 0;
+    background-color: #222d32;
 }
 
 .side .side-body .list-group-item a {
@@ -64,6 +63,7 @@ a {
 
 .side .side-body .list-group-item.active {
     background-color: #016673 !important;
+    border-color: rgba(0, 0, 0, .125) !important;
 }
 
 .side .side-body .pull-right-container {
@@ -77,7 +77,7 @@ a {
 }
 
 .side .side-body ul.child-ul .list-group-item {
-    background-color: #027581;
+    background-color: #181f23;
 }
 
 .side .side-body .list-group-item a .pull-right-container .fa-angle-right {
