@@ -15,7 +15,21 @@
             <label for="name" class="form-label">角色名</label>
             <input type="text" class="form-control" id="name" name="name" required="required">
         </div>
+        <div class="mb-3">
+            <label for="name" class="form-label">菜单规则</label>
+            {foreach $authRules as $authRule}
+            <div class="form-check">
+                <input class="form-check-input smarty-admin-rule-pid{$authRule['pid']} smarty-admin-rule-id{$authRule['id']}" data-id="{$authRule['id']}" data-pid="{$authRule['pid']}" onchange="smartyAdminRule(this,{$authRule['id']},{$authRule['pid']},1)" type="checkbox" name="rules[]" value="{$authRule['id']}" id="check{$authRule['id']}">
+                <label class="form-check-label" for="check{$authRule['id']}">
+                    {echoLevelStr($authRule['level'])}{$authRule['name']}
+                </label>
+            </div>
+            {/foreach}
+        </div>
         <button type="submit" class="btn btn-primary">添加</button>
     </form>
 </div>
+{/block}
+{block name=js}
+<script src="{url}/js/smartyadmin.min.js"></script>
 {/block}

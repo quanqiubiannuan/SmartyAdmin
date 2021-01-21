@@ -229,11 +229,15 @@ class Backend extends Controller
      * @param array $data 原始数组数据
      * @param int $pid 第一个父级id
      * @param int $level 级别
+     * @param bool $init 是否初始化数据
      * @return array
      */
-    protected function dealLevelData(array $data, int $pid = 0, int $level = 0): array
+    protected function dealLevelData(array $data, int $pid = 0, int $level = 0, bool $init = false): array
     {
         static $tree;
+        if ($init && $level === 0) {
+            $tree = [];
+        }
         foreach ($data as $v) {
             if ($pid === (int)$v['pid']) {
                 $v['level'] = $level + 1;

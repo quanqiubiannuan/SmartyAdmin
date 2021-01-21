@@ -25,6 +25,7 @@ class AuthGroup extends BackendCurd
     public function add()
     {
         $authGroups = $this->getLevelAuthGroup();
+        $authRules = $this->dealLevelData($this->getAuthRuleData('id,name,pid', [1]), init: true);
         if (isPost()) {
             $data = $_POST;
             $validate = new \application\admin\validate\AuthGroup();
@@ -34,6 +35,10 @@ class AuthGroup extends BackendCurd
             if (!$this->isSuperAdmin && !in_array($data['pid'], array_column($authGroups, 'id'))) {
                 $this->error('您没有权限设置此角色组');
             }
+            if (!empty(array_diff($data['rules'], array_column($authRules, 'id')))) {
+                $this->error('您没有权限设置此规则');
+            }
+            $data['rules'] = implode(',', $data['rules']);
             $authGroup = new \application\admin\model\AuthGroup();
             $num = $authGroup->allowField(true)->add($data);
             if ($num > 0) {
@@ -42,6 +47,7 @@ class AuthGroup extends BackendCurd
             $this->error('添加失败');
         }
         $this->assign('authGroups', $authGroups);
+        $this->assign('authRules', $authRules);
         $this->display();
     }
 
@@ -60,6 +66,7 @@ class AuthGroup extends BackendCurd
             $this->error('数据不存在');
         }
         $authGroups = $this->getLevelAuthGroup();
+        $authRules = $this->dealLevelData($this->getAuthRuleData('id,name,pid', [1]), init: true);
         if (isPost()) {
             $data = $_POST;
             $validate = new \application\admin\validate\AuthGroup();
@@ -69,6 +76,10 @@ class AuthGroup extends BackendCurd
             if (!$this->isSuperAdmin && !in_array($data['pid'], array_column($authGroups, 'id'))) {
                 $this->error('您没有权限设置此角色组');
             }
+            if (!empty(array_diff($data['rules'], array_column($authRules, 'id')))) {
+                $this->error('您没有权限设置此规则');
+            }
+            $data['rules'] = implode(',', $data['rules']);
             $num = $authGroup->eq('id', $id)
                 ->update($data);
             if ($num > 0) {
@@ -76,8 +87,14 @@ class AuthGroup extends BackendCurd
             }
             $this->error('编辑失败');
         }
+        if (!empty($data['rules'])){
+            $data['rules'] = explode(',', $data['rules']);
+        } else {
+            $data['rules'] = [];
+        }
         $this->assign('data', $data);
         $this->assign('authGroups', $authGroups);
+        $this->assign('authRules', $authRules);
         $this->display();
     }
 
