@@ -14,7 +14,7 @@ class AuthGroup extends BackendCurd
      */
     public function index()
     {
-        $list = $this->dealAuthGroup($this->getAllAuthGroup('*', [1, 2]), $this->smartyAdmin['auth_group_id']);
+        $list = $this->dealLevelData($this->getAllAuthGroup('*', [1, 2]), $this->smartyAdmin['auth_group_id']);
         $this->assign('list', $list);
         $this->display();
     }

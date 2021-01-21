@@ -79,32 +79,45 @@ class Backend extends Controller
     }
 
     /**
-     * 获取当前用户所有的权限菜单规则
+     * 获取当前用户的菜单规则
+     * @param string $field 要查询的字段
+     * @param array $status 要查询的状态
+     * @param string $order 排序规则
      * @return array
      */
-    private function getSmartyMenu(): array
+    protected function getAuthRuleData(string $field, array $status, string $order = 'pid asc,sort_num asc'): array
     {
-        $smartyMenu = [];
         $authRule = new AuthRule();
         if ($this->isSuperAdmin) {
             // 超级管理员
-            $authRuleData = $authRule->field('id,url,name,icon,pid,is_menu')
-                ->order('sort_num', 'asc')
-                ->eq('status', 1)
+            $authRuleData = $authRule->field($field)
+                ->order($order)
+                ->in('status', $status)
                 ->select();
         } else {
             if (!empty($this->authGroup)) {
                 // 分组用户
                 $authRuleData = $authRule->in('id', $this->authGroup['rules'])
-                    ->field('id,url,name,icon,pid,is_menu')
-                    ->order('sort_num', 'asc')
-                    ->eq('status', 1)
+                    ->field($field)
+                    ->order($order)
+                    ->in('status', $status)
                     ->select();
             } else {
                 // 其它用户
                 return [];
             }
         }
+        return $authRuleData;
+    }
+
+    /**
+     * 获取当前用户所有的权限菜单规则
+     * @return array
+     */
+    private function getSmartyMenu(): array
+    {
+        $smartyMenu = [];
+        $authRuleData = $this->getAuthRuleData('id,url,name,icon,pid,is_menu', [1]);
         if (!empty($authRuleData)) {
             $this->authRule = $authRuleData;
             $newAuthRuleData = [];
@@ -208,7 +221,7 @@ class Backend extends Controller
      */
     protected function getLevelAuthGroup(): array
     {
-        return $this->dealAuthGroup($this->getAllAuthGroup(), $this->smartyAdmin['auth_group_id']);
+        return $this->dealLevelData($this->getAllAuthGroup(), $this->smartyAdmin['auth_group_id']);
     }
 
     /**
@@ -218,14 +231,14 @@ class Backend extends Controller
      * @param int $level 级别
      * @return array
      */
-    protected function dealAuthGroup(array $data, int $pid = 0, int $level = 0): array
+    protected function dealLevelData(array $data, int $pid = 0, int $level = 0): array
     {
         static $tree;
         foreach ($data as $v) {
             if ($pid === (int)$v['pid']) {
                 $v['level'] = $level + 1;
                 $tree[] = $v;
-                $this->dealAuthGroup($data, $v['id'], $v['level']);
+                $this->dealLevelData($data, $v['id'], $v['level']);
             }
         }
         return $tree;
