@@ -66,15 +66,15 @@ class AuthGroup extends BackendCurd
             $this->error('数据不存在');
         }
         $authGroups = $this->getLevelAuthGroup();
+        if (!$this->isSuperAdmin && !in_array($data['pid'], array_column($authGroups, 'id'))) {
+            $this->error('您没有权限编辑此角色组');
+        }
         $authRules = $this->dealLevelData($this->getAuthRuleData('id,name,pid', [1]), init: true);
         if (isPost()) {
             $data = $_POST;
             $validate = new \application\admin\validate\AuthGroup();
             if ($validate->scene('edit')->check($data) === false) {
                 $this->error($validate->getError());
-            }
-            if (!$this->isSuperAdmin && !in_array($data['pid'], array_column($authGroups, 'id'))) {
-                $this->error('您没有权限设置此角色组');
             }
             if (!empty(array_diff($data['rules'], array_column($authRules, 'id')))) {
                 $this->error('您没有权限设置此规则');

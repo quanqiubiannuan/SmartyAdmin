@@ -39,6 +39,15 @@ class Backend extends Controller
         if (empty($smartyAdmin)) {
             redirect('/login');
         }
+        // 验证session用户是否正确
+        $admin = new \application\admin\model\Admin();
+        $smartyAdmin = $admin->eq('id', $smartyAdmin['id'])
+            ->eq('status', 1)
+            ->find();
+        if (empty($smartyAdmin)) {
+            redirect('/login');
+        }
+        unset($smartyAdmin['password']);
         // 初始化当前登录用户信息
         $this->smartyAdmin = $smartyAdmin;
         if (0 === (int)$this->smartyAdmin['auth_group_id']) {

@@ -147,14 +147,14 @@ class Admin extends BackendCurd
             $this->error('超级管理员无法编辑');
         }
         $authGroups = $this->getLevelAuthGroup();
+        if (!$this->isSuperAdmin && !in_array($data['auth_group_id'], array_column($authGroups, 'id'))) {
+            $this->error('您没有权限编辑此角色下的用户');
+        }
         if (isPost()) {
             $data = $_POST;
             $validate = new \application\admin\validate\Admin();
             if ($validate->scene('edit')->check($data) === false) {
                 $this->error($validate->getError());
-            }
-            if (!$this->isSuperAdmin && !in_array($data['auth_group_id'], array_column($authGroups, 'id'))) {
-                $this->error('您没有权限设置此角色组');
             }
             $avatar = Upload::getInstance()->move('avatar');
             if (!empty($avatar)) {
@@ -166,6 +166,8 @@ class Admin extends BackendCurd
                     $this->error('密码由6-20位字母或数字组成');
                 }
                 $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+            } else {
+                unset($data['password']);
             }
             $num = $admin->eq('id', $id)
                 ->update($data);

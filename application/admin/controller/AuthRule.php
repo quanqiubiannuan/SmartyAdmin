@@ -67,14 +67,14 @@ class AuthRule extends BackendCurd
             $this->error('数据不存在');
         }
         $authRules = $this->dealLevelData($this->getAuthRuleData('id,name,pid,is_menu,sort_num', [1]));
+        if (!$this->isSuperAdmin && !in_array($data['pid'], array_column($authRules, 'id'))) {
+            $this->error('您没有权限编辑此规则');
+        }
         if (isPost()) {
             $data = $_POST;
             $validate = new \application\admin\validate\AuthRule();
             if ($validate->scene('edit')->check($data) === false) {
                 $this->error($validate->getError());
-            }
-            if (!$this->isSuperAdmin && !in_array($data['pid'], array_column($authRules, 'id'))) {
-                $this->error('您没有权限设置此规则');
             }
             if (empty($data['url'])) {
                 $data['url'] = null;
