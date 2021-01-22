@@ -219,6 +219,7 @@ class Backend extends Controller
         foreach ($authGroupData as $v) {
             if ($this->smartyAdmin['auth_group_id'] === $v['pid'] || in_array($v['pid'], $authGroupIds)) {
                 $data[] = $v;
+                $authGroupIds[] = $v['id'];
             }
         }
         return $data;
