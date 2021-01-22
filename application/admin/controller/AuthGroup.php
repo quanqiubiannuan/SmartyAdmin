@@ -32,7 +32,7 @@ class AuthGroup extends BackendCurd
             if ($validate->scene('add')->check($data) === false) {
                 $this->error($validate->getError());
             }
-            if (!$this->isSuperAdmin && !in_array($data['pid'], array_column($authGroups, 'id'))) {
+            if (!$this->isSuperAdmin && !in_array($data['id'], array_column($authGroups, 'id'))) {
                 $this->error('您没有权限设置此角色组');
             }
             if (!empty(array_diff($data['rules'], array_column($authRules, 'id')))) {
@@ -66,7 +66,7 @@ class AuthGroup extends BackendCurd
             $this->error('数据不存在');
         }
         $authGroups = $this->getLevelAuthGroup();
-        if (!$this->isSuperAdmin && !in_array($data['pid'], array_column($authGroups, 'id'))) {
+        if (!$this->isSuperAdmin && !in_array($data['id'], array_column($authGroups, 'id'))) {
             $this->error('您没有权限编辑此角色组');
         }
         $authRules = $this->dealLevelData($this->getAuthRuleData('id,name,pid', [1]), init: true);
@@ -113,7 +113,7 @@ class AuthGroup extends BackendCurd
             $this->error('数据不存在');
         }
         $authGroups = $this->getLevelAuthGroup();
-        if (!$this->isSuperAdmin && !in_array($data['pid'], array_column($authGroups, 'id'))) {
+        if (!$this->isSuperAdmin && !in_array($data['id'], array_column($authGroups, 'id'))) {
             $this->error('您没有权限删除此角色');
         }
         // 有下级角色的不能删除

@@ -22,10 +22,10 @@
             <td class="text-start">{echoLevelStr($item['level'])}{$item['name']}</td>
             <td>{if $item['status'] == 1}正常{else}停用{/if}</td>
             <td>
-                {if auth('admin/edit')}
+                {if auth('auth_group/edit')}
                 <a href="{url}/auth_group/edit?id={$item['id']}" class="btn-link me-2"><i class="fas fa-pencil-alt"></i></a>
                 {/if}
-                {if auth('admin/delete')}
+                {if auth('auth_group/delete')}
                 <a href="{url}/auth_group/delete?id={$item['id']}" id="smartyAdminDelete{$item['id']}" class="btn-link text-danger" onclick="return smartyAdminDelete({$item['id']});"><i class="fas fa-trash-alt"></i></a>
                 {/if}
             </td>
