@@ -35,6 +35,8 @@ https://github.com/quanqiubiannuan/files/tree/main/smartyadmin/0.0.1/%E9%A2%84%E
 
 **安装**
 
+`php >= 8`
+
 数据库统一使用  `utf8mb4` 编码
 
 1、创建数据库 `smartyadmin`
