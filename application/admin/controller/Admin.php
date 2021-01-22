@@ -14,6 +14,7 @@ class Admin extends BackendCurd
     protected array $joinCondition = ['auth_group', 'auth_group.id=admin.auth_group_id'];
     protected string $field = 'admin.*,auth_group.name as auth_group_name';
     protected int $dataType = 3;
+    protected string $dataField = 'id';
 
     /**
      * 后台首页
