@@ -49,7 +49,9 @@ class Index extends Controller
                     ->count() >= 3) {
                 $this->error('登录失败');
             }
-            $admin = (new \application\admin\model\Admin())->eq('name', $name)->find();
+            $admin = (new \application\admin\model\Admin())
+                ->eq('name', $name)
+                ->find();
             if (empty($admin)) {
                 $this->error('账号或密码错误');
             }
@@ -57,14 +59,50 @@ class Index extends Controller
                 $loginLog->addLoginLog($admin['id'], 2);
                 $this->error('账号或密码错误');
             }
-            if (1 != $admin['status']) {
+            if (1 !== (int)$admin['status']) {
                 $loginLog->addLoginLog($admin['id'], 2);
                 $this->error('账号已停用');
             }
+            // 判断角色
+            $authRule = new \application\admin\model\AuthRule();
+            if (0 === (int)$admin['auth_group_id']) {
+                // 超级管理员
+                $authRuleData = $authRule->order('pid asc,sort_num asc')
+                    ->field('url')
+                    ->notNull('url')
+                    ->eq('status', 1)
+                    ->find();
+            } else {
+                // 其他角色组
+                $authGroup = new \application\admin\model\AuthGroup();
+                $authGroupData = $authGroup->field('rules')
+                    ->eq('id', $admin['auth_group_id'])
+                    ->eq('status', 1)
+                    ->find();
+                if (empty($authGroupData)) {
+                    $loginLog->addLoginLog($admin['id'], 2);
+                    $this->error('角色组已停用');
+                }
+                if (empty($authGroupData['rules'])) {
+                    $loginLog->addLoginLog($admin['id'], 2);
+                    $this->error('角色组未设置菜单规则');
+                }
+                $authRuleData = $authRule->order('pid asc,sort_num asc')
+                    ->field('url')
+                    ->notNull('url')
+                    ->in('id', $authGroupData['rules'])
+                    ->eq('status', 1)
+                    ->find();
+            }
+            if (empty($authRuleData)) {
+                $loginLog->addLoginLog($admin['id'], 2);
+                $this->error('菜单规则为空');
+            }
+            $url = $authRuleData['url'];
             $loginLog->addLoginLog($admin['id'], 1);
             unset($admin['password']);
             setSession(config('app.smarty_admin_session', 'smartyAdmin'), $admin);
-            redirect('/');
+            redirect($url);
         }
         $this->display();
     }

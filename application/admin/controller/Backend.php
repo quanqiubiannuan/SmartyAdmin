@@ -234,7 +234,7 @@ class Backend extends Controller
      */
     protected function dealLevelData(array $data, int $pid = 0, int $level = 0, bool $init = false): array
     {
-        static $tree;
+        static $tree = [];
         if ($init && $level === 0) {
             $tree = [];
         }
