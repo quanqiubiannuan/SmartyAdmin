@@ -23,7 +23,6 @@ class Index extends Controller
     #[Route('/login')]
     public function login()
     {
-        Session::getInstance()->clear();
         if (isPost()) {
             $code = getPostString('code');
             if (empty($code)) {
@@ -104,6 +103,7 @@ class Index extends Controller
             setSession(config('app.smarty_admin_session', 'smartyAdmin'), $admin);
             redirect($url);
         }
+        Session::getInstance()->clear();
         $this->display();
     }
 
