@@ -31,7 +31,7 @@
             <td>{if $item['status'] == 1}正常{else}停用{/if}</td>
             <td>
                 {if auth('auth_rule/edit')}
-                <a href="{url}/auth_rule/edit?id={$item['id']}" class="btn-link me-2"><i class="fas fa-pencil-alt"></i></a>
+                <a href="{url}/auth_rule/edit?id={$item['id']}" class="btn-link me-2"><i class="fas fa-edit"></i></a>
                 {/if}
                 {if auth('auth_rule/delete')}
                 <a href="{url}/auth_rule/delete?id={$item['id']}" id="smartyAdminDelete{$item['id']}" class="btn-link text-danger" onclick="return smartyAdminDelete({$item['id']});"><i class="fas fa-trash-alt"></i></a>
