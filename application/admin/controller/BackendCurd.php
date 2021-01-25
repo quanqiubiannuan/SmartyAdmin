@@ -181,7 +181,7 @@ class BackendCurd extends Backend
                     break;
             }
         }
-        if ($this->totalNum > 0) {
+        if (empty($searchParam) && $this->totalNum > 0) {
             $list = $model->paginateByCount($this->totalNum, $this->size, false, 5, $this->varPage);
         } else {
             $list = $model->paginate($this->size, false, 5, $this->varPage);
