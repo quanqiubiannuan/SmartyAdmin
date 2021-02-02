@@ -2869,9 +2869,19 @@
     return Treeview._jQueryInterface;
   };
 
+  exports.CardRefresh = CardRefresh;
+  exports.CardWidget = CardWidget;
+  exports.ControlSidebar = ControlSidebar;
+  exports.DirectChat = DirectChat;
   exports.Dropdown = Dropdown;
   exports.ExpandableTable = ExpandableTable;
+  exports.IFrame = IFrame;
+  exports.Layout = Layout;
+  exports.NavbarSearch = NavbarSearch;
+  exports.PushMenu = PushMenu;
   exports.SidebarSearch = SidebarSearch;
+  exports.Toasts = Toasts;
+  exports.TodoList = TodoList;
   exports.Treeview = Treeview;
 
   Object.defineProperty(exports, '__esModule', { value: true });
