@@ -3,103 +3,138 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="{url}/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{url}/css/fontawesome.min.css" rel="stylesheet">
-    <link href="{url}/css/solid.min.css" rel="stylesheet">
-    <link href="{url}/css/smartyadmin.min.css" rel="stylesheet">
+    <link href="{url}/css/all.min.css" rel="stylesheet">
+    <link href="{url}/css/icheck-bootstrap.min.css" rel="stylesheet">
+    <link href="{url}/css/adminlte.min.css" rel="stylesheet">
+    <link href="{url}/css/smartyadmin.css" rel="stylesheet">
     <title>{#title#}</title>
     {block name=css}{/block}
 </head>
-<body>
-<div class="container-fluid h-100">
-    <div class="row h-100">
-        <div class="col-md-2 side p-0">
-            <div class="side-head">
-                <h5 class="m-0">{#title#}</h5>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            {if !$isMenuPage}
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:history.back();" role="button" title="返回">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+            </li>
+            {/if}
+            <li class="nav-item">
+                <a class="nav-link" data-widget="fullscreen" href="#" role="button" title="全屏">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                </a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#" title="{$smartyAdmin['name']}">
+                    {if !empty($smartyAdmin['avatar'])}
+                    <img class="img-fluid" width="20" height="20" src="{$smartyAdmin['avatar']}" alt="{$smartyAdmin['name']}">
+                    {else}
+                    <i class="fas fa-user-circle"></i>
+                    {/if}
+                    <span class="ps-2">{$smartyAdmin['name']}</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    {if auth('admin/profile')}
+                        <a class="dropdown-item" href="{url}/admin/profile"><i class="fas fa-user-circle mr-2"></i>个人资料</a>
+                    {/if}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{url}/login"><i class="fas fa-sign-out-alt mr-2"></i>退出</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <div class="sidebar overflow-hidden">
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    {if !empty($smartyAdmin['avatar'])}
+                    <img src="{$smartyAdmin['avatar']}" class="img-circle elevation-2" alt="{$smartyAdmin['name']}">
+                    {else}
+                    <i class="fas fa-user-circle font-34 text-white"></i>
+                    {/if}
+                </div>
+                <div class="info">
+                    <a href="{if auth('admin/profile')}{url}/admin/profile{else}javascript:void(0);{/if}"
+                       class="d-block">{$smartyAdmin['name']}</a>
+                </div>
             </div>
-            <div class="side-body">
-                <ul class="list-group list-group-flush">
+            <div class="form-inline">
+                <div class="input-group" data-widget="sidebar-search">
+                    <input class="form-control form-control-sidebar" type="search" placeholder="搜索"
+                           aria-label="搜索">
+                    <div class="input-group-append">
+                        <button class="btn btn-sidebar">
+                            <i class="fas fa-search fa-fw"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
                     {foreach $smartyMenu as $menu}
                     {if !empty($menu['children'])}
-                    <li class="list-group-item">
-                        <a data-bs-toggle="collapse" href="javascript:void(0);" data-bs-target="#child{$menu['id']}" {if !$menu['expanded']}class="collapsed" aria-expanded="false"{else}aria-expanded="true"{/if}
-                        aria-controls="child{$menu['id']}">
-                        <i class="{$menu['icon']}"></i><span>{$menu['name']}</span>
-                        <span class="pull-right-container">
-                                    <i class="fas fa-angle-right"></i>
-                                </span>
+                    <li class="nav-item{if $menu['expanded']} menu-open{/if}">
+                        <a href="javascript:void(0);" class="nav-link{if $menu['expanded']} active{/if}">
+                            <i class="nav-icon {$menu['icon']}"></i>
+                            <p>
+                                {$menu['name']}
+                                <i class="right fas fa-angle-right"></i>
+                            </p>
                         </a>
-                        <ul class="list-group list-group-flush child-ul collapse {if $menu['expanded']}show{/if}"
-                            id="child{$menu['id']}">
+                        <ul class="nav nav-treeview">
                             {foreach $menu['children'] as $childMenu}
-                            <li class="list-group-item {if $childMenu['id'] == $currentMenu['id']}active{/if}">
-                                <a href="{url}/{$childMenu['url']}">
-                                    <i class="{$childMenu['icon']}"></i><span>{$childMenu['name']}</span>
+                            <li class="nav-item">
+                                <a href="{url}/{$childMenu['url']}" class="nav-link{if $childMenu['id'] == $currentMenu['id']} active{/if}">
+                                    <i class="{$childMenu['icon']} nav-icon"></i>
+                                    <p>{$childMenu['name']}</p>
                                 </a>
                             </li>
                             {/foreach}
                         </ul>
                     </li>
                     {else}
-                    <li class="list-group-item {if $menu['id'] == $currentMenu['id']}active{/if}">
-                        <a href="{url}/{$menu['url']}">
-                            <i class="{$menu['icon']}"></i><span>{$menu['name']}</span>
+                    <li class="nav-item">
+                        <a href="{url}/{$menu['url']}" class="nav-link{if $menu['id'] == $currentMenu['id']} active{/if}">
+                            <i class="nav-icon {$menu['icon']}"></i>
+                            <p>
+                                {$menu['name']}
+                            </p>
                         </a>
                     </li>
                     {/if}
                     {/foreach}
                 </ul>
-            </div>
+            </nav>
         </div>
-        <div class="col-md-10 main p-0">
-            <div class="main-head d-flex justify-content-between">
-                <div class="d-inline-flex align-items-center">
-                    <span class="ps-2 font-13"><i class="{$currentMenu['icon']} p-2"></i>{$currentMenu['name']}</span>
-                </div>
-                <div class="d-inline-flex">
-                    <ul class="nav justify-content-end">
-                        {if !$isMenuPage}
-                        <li class="nav-item">
-                            <a class="nav-link" href="javascript:history.back();">
-                                <i class="fas fa-backward"></i><span class="ps-2">返回</span>
-                            </a>
-                        </li>
-                        {/if}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown"
-                               aria-expanded="false">
-                                {if !empty($smartyAdmin['avatar'])}
-                                <img class="img-fluid" width="20" height="20" src="{$smartyAdmin['avatar']}" alt="{$smartyAdmin['name']}">
-                                {else}
-                                <i class="fas fa-user-circle"></i>
-                                {/if}
-                                <span class="ps-2">{$smartyAdmin['name']}</span>
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                {if auth('admin/profile')}
-                                <li>
-                                    <a class="dropdown-item" href="{url}/admin/profile"><i class="fas fa-user-circle me-2"></i>个人资料</a>
-                                </li>
-                                {/if}
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="{url}/login"><i class="fas fa-sign-out-alt me-2"></i>退出</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+    </aside>
+    <div class="content-wrapper">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-12">
+                        <h1>{$currentMenu['name']}</h1>
+                    </div>
                 </div>
             </div>
-            <div class="main-body mt-2">
+        </section>
+        <section class="content">
+            <div class="container-fluid">
                 {block name=content}{/block}
             </div>
-        </div>
+        </section>
     </div>
 </div>
-<script src="{url}/js/popper.min.js"></script>
-<script src="{url}/js/bootstrap.min.js"></script>
+<script src="{url}/js/jquery.min.js"></script>
+<script src="{url}/js/bootstrap.bundle.min.js"></script>
+<script src="{url}/js/adminlte.min.js"></script>
 {block name=js}{/block}
 </body>
 </html>

@@ -1,51 +1,56 @@
 <!DOCTYPE html>{config_load file="templet.conf"}
-<html>
+<html lang="zh-CN">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="{url}/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{url}/css/fontawesome.min.css" rel="stylesheet">
-    <link href="{url}/css/solid.min.css" rel="stylesheet">
-    <link href="{url}/css/smartyadmin.min.css" rel="stylesheet">
+    <link href="{url}/css/all.min.css" rel="stylesheet">
+    <link href="{url}/css/icheck-bootstrap.min.css" rel="stylesheet">
+    <link href="{url}/css/adminlte.min.css" rel="stylesheet">
+    <link href="{url}/css/smartyadmin.css" rel="stylesheet">
     <title>{#title#}</title>
 </head>
-<body>
-<div class="container">
-    <div class="row align-items-center justify-content-start">
-        <div class="col-md-4 loginbox">
-            <h4 class="text-center">{#title#}</h4>
-            <hr>
-            <form method="post" action="{href}">
-                <div class="mb-3">
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="fas fa-user"></i></span>
-                        <input placeholder="请输入账号" type="text" required="required" class="form-control" name="name">
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                        <input placeholder="请输入密码" type="password" required="required" class="form-control"
-                               name="password">
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <div class="d-inline-flex w-100 captcha">
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-check"></i></span>
-                            <input placeholder="请输入验证码" type="text" required="required" class="form-control d-inline-block"  name="code">
+<body class="hold-transition login-page">
+<div class="login-box">
+    <div class="card">
+        <div class="card-body login-card-body">
+            <p class="login-box-msg">{#title#}</p>
+            <form action="{href}" method="post">
+                <div class="input-group mb-3">
+                    <input type="text" name="name" required="required" class="form-control" placeholder="用户名">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
                         </div>
-                        {captcha src='/captcha'}
                     </div>
                 </div>
-                <div class="d-grid gap-1 mx-auto">
-                    <button type="submit" class="btn btn-dark text-center">登录</button>
+                <div class="input-group mb-3">
+                    <input type="password" name="password" required="required" class="form-control" placeholder="密码">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input placeholder="验证码" type="text" required="required" class="form-control" name="code">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-check"></span>
+                        </div>
+                    </div>
+                    {captcha src='/captcha'}
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary btn-block">登录</button>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<script src="{url}/js/popper.min.js"></script>
-<script src="{url}/js/bootstrap.min.js"></script>
+<script src="{url}/js/jquery.min.js"></script>
+<script src="{url}/js/bootstrap.bundle.min.js"></script>
+<script src="{url}/js/adminlte.min.js"></script>
 </body>
 </html>
