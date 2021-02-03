@@ -26,6 +26,25 @@
                 </a>
             </li>
             {/if}
+            {if auth('admin/clear_cache')}
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#" title="清空缓存">
+                    <i class="fa fa-trash-alt"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a href="{url}/admin/clear_cache?type=1" class="dropdown-item">
+                        <i class="fa fa-trash mr-2"></i>清空所有缓存
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="{url}/admin/clear_cache?type=2" class="dropdown-item">
+                        <i class="fa fa-file mr-2"></i>清空模板缓存
+                    </a>
+                    <a href="{url}/admin/clear_cache?type=3" class="dropdown-item">
+                        <i class="fa fa-file-alt mr-2"></i>清空内容缓存
+                    </a>
+                </div>
+            </li>
+            {/if}
             <li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#" title="{$smartyAdmin['name']}">
                     {if !empty($smartyAdmin['avatar'])}
@@ -35,7 +54,7 @@
                     {/if}
                     <span class="ps-2">{$smartyAdmin['name']}</span>
                 </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                <div class="dropdown-menu dropdown-menu-right">
                     {if auth('admin/profile')}
                         <a class="dropdown-item" href="{url}/admin/profile"><i class="fas fa-user-circle mr-2"></i>个人资料</a>
                     {/if}

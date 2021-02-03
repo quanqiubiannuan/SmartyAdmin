@@ -3,6 +3,7 @@
 namespace application\home\controller;
 
 use application\home\model\LoginLog;
+use library\mysmarty\Redis;
 use library\mysmarty\Route;
 use library\mysmarty\Session;
 use library\mysmarty\Upload;
@@ -212,5 +213,54 @@ class Admin extends BackendCurd
             $this->success('删除成功', getAbsoluteUrl() . '/' . $this->currentMenu['url']);
         }
         $this->error('删除失败');
+    }
+
+    /**
+     * 清空缓存
+     */
+    public function clearCache()
+    {
+        $type = getInt('type');
+        switch ($type) {
+            case 1:
+                // 清空所有缓存
+                $this->delTmpTemplate(RUNTIME_DIR);
+                break;
+            case 2:
+                // 清空模板缓存
+                $this->delTmpTemplate(RUNTIME_DIR . '/templates_c');
+                break;
+            case 3:
+                // 清空内容缓存
+                $this->delTmpTemplate(RUNTIME_DIR . '/cache');
+                if ('redis' === config('mysmarty.caching_type')) {
+                    Redis::getInstance()->flushAll();
+                }
+                break;
+        }
+        $this->success('清空缓存成功');
+    }
+
+    /**
+     * 递归删除文件
+     * @param string $dir 文件夹
+     */
+    private function delTmpTemplate(string $dir)
+    {
+        if (!file_exists($dir)) {
+            return;
+        }
+        $files = scandir($dir);
+        foreach ($files as $file) {
+            if ($file == '.' || $file == '..') {
+                continue;
+            }
+            $f = $dir . '/' . $file;
+            if (is_dir($f)) {
+                $this->delTmpTemplate($f);
+            } else {
+                unlink($f);
+            }
+        }
     }
 }
