@@ -1,8 +1,8 @@
 <?php
 
-namespace application\admin\controller;
+namespace application\home\controller;
 
-use application\admin\model\LoginLog;
+use application\home\model\LoginLog;
 use library\mysmarty\Captcha;
 use library\mysmarty\Controller;
 use library\mysmarty\Route;
@@ -10,7 +10,7 @@ use library\mysmarty\Session;
 
 /**
  * 无需登录的控制器
- * @package application\admin\controller
+ * @package application\home\controller
  */
 class Index extends Controller
 {
@@ -48,7 +48,7 @@ class Index extends Controller
                     ->count() >= 3) {
                 $this->error('登录失败');
             }
-            $admin = (new \application\admin\model\Admin())
+            $admin = (new \application\home\model\Admin())
                 ->eq('name', $name)
                 ->find();
             if (empty($admin)) {
@@ -63,7 +63,7 @@ class Index extends Controller
                 $this->error('账号已停用');
             }
             // 判断角色
-            $authRule = new \application\admin\model\AuthRule();
+            $authRule = new \application\home\model\AuthRule();
             if (0 === (int)$admin['auth_group_id']) {
                 // 超级管理员
                 $authRuleData = $authRule->order('pid asc,sort_num asc')
@@ -73,7 +73,7 @@ class Index extends Controller
                     ->find();
             } else {
                 // 其他角色组
-                $authGroup = new \application\admin\model\AuthGroup();
+                $authGroup = new \application\home\model\AuthGroup();
                 $authGroupData = $authGroup->field('rules')
                     ->eq('id', $admin['auth_group_id'])
                     ->eq('status', 1)

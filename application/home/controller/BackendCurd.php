@@ -1,12 +1,12 @@
 <?php
 
-namespace application\admin\controller;
+namespace application\home\controller;
 
 use library\mysmarty\Model;
 
 /**
  * 具有查询，添加，删除，编辑操作的权限控制类
- * @package application\admin\controller
+ * @package application\home\controller
  */
 class BackendCurd extends Backend
 {
@@ -39,7 +39,7 @@ class BackendCurd extends Backend
     // 关联的字段ID。$dataType 不为1时，必须填写
     protected string $dataField = 'admin_id';
     // 表单验证文件
-    // 比如：\application\admin\validate\Admin::class;
+    // 比如：\application\home\validate\Admin::class;
     protected string $validate;
     // 是否允许执行列表方法
     protected bool $allowIndexMethod = true;

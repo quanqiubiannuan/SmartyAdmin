@@ -1,6 +1,6 @@
 <?php
 
-namespace application\admin\validate;
+namespace application\home\validate;
 
 use library\mysmarty\Validate;
 

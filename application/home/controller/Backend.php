@@ -1,14 +1,14 @@
 <?php
 
-namespace application\admin\controller;
+namespace application\home\controller;
 
-use application\admin\model\AuthGroup;
-use application\admin\model\AuthRule;
+use application\home\model\AuthGroup;
+use application\home\model\AuthRule;
 use library\mysmarty\Controller;
 
 /**
  * 后台基础控制器
- * @package application\admin\controller
+ * @package application\home\controller
  */
 class Backend extends Controller
 {
@@ -40,7 +40,7 @@ class Backend extends Controller
             redirect('/login');
         }
         // 验证session用户是否正确
-        $admin = new \application\admin\model\Admin();
+        $admin = new \application\home\model\Admin();
         $smartyAdmin = $admin->eq('id', $smartyAdmin['id'])
             ->eq('status', 1)
             ->find();
@@ -268,7 +268,7 @@ class Backend extends Controller
         $authGroupData = $this->getAllAuthGroup();
         $authGroupIds = array_column($authGroupData, 'id');
         if (!empty($authGroupIds)) {
-            $admin = new \application\admin\model\Admin();
+            $admin = new \application\home\model\Admin();
             $result = $admin->in('auth_group_id', $authGroupIds)
                 ->field('id')
                 ->select();

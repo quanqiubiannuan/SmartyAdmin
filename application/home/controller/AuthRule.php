@@ -1,6 +1,6 @@
 <?php
 
-namespace application\admin\controller;
+namespace application\home\controller;
 
 use library\mysmarty\Route;
 
@@ -27,7 +27,7 @@ class AuthRule extends BackendCurd
         $authRules = $this->dealLevelData($this->getAuthRuleData('id,name,pid,is_menu,sort_num', [1]));
         if (isPost()) {
             $data = $_POST;
-            $validate = new \application\admin\validate\AuthRule();
+            $validate = new \application\home\validate\AuthRule();
             if ($validate->scene('add')->check($data) === false) {
                 $this->error($validate->getError());
             }
@@ -41,7 +41,7 @@ class AuthRule extends BackendCurd
                     $this->error('链接不存在');
                 }
             }
-            $authRule = new \application\admin\model\AuthRule();
+            $authRule = new \application\home\model\AuthRule();
             $num = $authRule->allowField(true)->add($data);
             if ($num > 0) {
                 $this->success('添加成功', getAbsoluteUrl() . '/' . $this->currentMenu['url']);
@@ -61,7 +61,7 @@ class AuthRule extends BackendCurd
         if (empty($id)) {
             $this->error('参数错误');
         }
-        $authRule = new \application\admin\model\AuthRule();
+        $authRule = new \application\home\model\AuthRule();
         $data = $authRule->eq('id', $id)->find();
         if (empty($data)) {
             $this->error('数据不存在');
@@ -72,7 +72,7 @@ class AuthRule extends BackendCurd
         }
         if (isPost()) {
             $data = $_POST;
-            $validate = new \application\admin\validate\AuthRule();
+            $validate = new \application\home\validate\AuthRule();
             if ($validate->scene('edit')->check($data) === false) {
                 $this->error($validate->getError());
             }
@@ -104,7 +104,7 @@ class AuthRule extends BackendCurd
         if (empty($id)) {
             $this->error('参数错误');
         }
-        $authRule = new \application\admin\model\AuthRule();
+        $authRule = new \application\home\model\AuthRule();
         $data = $authRule->eq('id', $id)->find();
         if (empty($data)) {
             $this->error('数据不存在');
@@ -118,7 +118,7 @@ class AuthRule extends BackendCurd
             $this->error('无法删除父级规则');
         }
         // 查询此规则是否关联角色
-        $authGroup = new \application\admin\model\AuthGroup();
+        $authGroup = new \application\home\model\AuthGroup();
         if ($authGroup->where('FIND_IN_SET(' . $id . ',rules)')->find()) {
             $this->error('无法删除已关联角色的规则');
         }

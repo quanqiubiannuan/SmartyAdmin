@@ -1,6 +1,6 @@
 <?php
 
-namespace application\admin\controller;
+namespace application\home\controller;
 
 use library\mysmarty\Route;
 

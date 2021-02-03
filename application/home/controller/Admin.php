@@ -1,8 +1,8 @@
 <?php
 
-namespace application\admin\controller;
+namespace application\home\controller;
 
-use application\admin\model\LoginLog;
+use application\home\model\LoginLog;
 use library\mysmarty\Route;
 use library\mysmarty\Session;
 use library\mysmarty\Upload;
@@ -88,7 +88,7 @@ class Admin extends BackendCurd
             if (!empty($avatar)) {
                 $updateData['avatar'] = $avatar;
             }
-            $admin = new \application\admin\model\Admin();
+            $admin = new \application\home\model\Admin();
             if ($admin->eq('id', $this->smartyAdmin['id'])->update($updateData)) {
                 Session::getInstance()->clear();
                 $this->success('更新成功', '/login');
@@ -106,7 +106,7 @@ class Admin extends BackendCurd
         $authGroups = $this->getLevelAuthGroup();
         if (isPost()) {
             $data = $_POST;
-            $validate = new \application\admin\validate\Admin();
+            $validate = new \application\home\validate\Admin();
             if ($validate->scene('add')->check($data) === false) {
                 $this->error($validate->getError());
             }
@@ -119,7 +119,7 @@ class Admin extends BackendCurd
             }
             $data['avatar'] = $avatar;
             $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-            $admin = new \application\admin\model\Admin();
+            $admin = new \application\home\model\Admin();
             $num = $admin->allowField(true)->add($data);
             if ($num > 0) {
                 $this->success('添加成功', getAbsoluteUrl() . '/' . $this->currentMenu['url']);
@@ -139,7 +139,7 @@ class Admin extends BackendCurd
         if (empty($id)) {
             $this->error('参数错误');
         }
-        $admin = new \application\admin\model\Admin();
+        $admin = new \application\home\model\Admin();
         $data = $admin->eq('id', $id)->find();
         if (empty($data)) {
             $this->error('数据不存在');
@@ -153,7 +153,7 @@ class Admin extends BackendCurd
         }
         if (isPost()) {
             $data = $_POST;
-            $validate = new \application\admin\validate\Admin();
+            $validate = new \application\home\validate\Admin();
             if ($validate->scene('edit')->check($data) === false) {
                 $this->error($validate->getError());
             }
@@ -191,7 +191,7 @@ class Admin extends BackendCurd
         if (empty($id)) {
             $this->error('参数错误');
         }
-        $admin = new \application\admin\model\Admin();
+        $admin = new \application\home\model\Admin();
         $data = $admin->eq('id', $id)->find();
         if (empty($data)) {
             $this->error('数据不存在');

@@ -1,6 +1,6 @@
 <?php
 
-namespace application\admin\controller;
+namespace application\home\controller;
 
 use library\mysmarty\Route;
 
@@ -28,7 +28,7 @@ class AuthGroup extends BackendCurd
         $authRules = $this->dealLevelData($this->getAuthRuleData('id,name,pid', [1]), init: true);
         if (isPost()) {
             $data = $_POST;
-            $validate = new \application\admin\validate\AuthGroup();
+            $validate = new \application\home\validate\AuthGroup();
             if ($validate->scene('add')->check($data) === false) {
                 $this->error($validate->getError());
             }
@@ -39,7 +39,7 @@ class AuthGroup extends BackendCurd
                 $this->error('您没有权限设置此规则');
             }
             $data['rules'] = implode(',', $data['rules']);
-            $authGroup = new \application\admin\model\AuthGroup();
+            $authGroup = new \application\home\model\AuthGroup();
             $num = $authGroup->allowField(true)->add($data);
             if ($num > 0) {
                 $this->success('添加成功', getAbsoluteUrl() . '/' . $this->currentMenu['url']);
@@ -60,7 +60,7 @@ class AuthGroup extends BackendCurd
         if (empty($id)) {
             $this->error('参数错误');
         }
-        $authGroup = new \application\admin\model\AuthGroup();
+        $authGroup = new \application\home\model\AuthGroup();
         $data = $authGroup->eq('id', $id)->find();
         if (empty($data)) {
             $this->error('数据不存在');
@@ -72,7 +72,7 @@ class AuthGroup extends BackendCurd
         $authRules = $this->dealLevelData($this->getAuthRuleData('id,name,pid', [1]), init: true);
         if (isPost()) {
             $data = $_POST;
-            $validate = new \application\admin\validate\AuthGroup();
+            $validate = new \application\home\validate\AuthGroup();
             if ($validate->scene('edit')->check($data) === false) {
                 $this->error($validate->getError());
             }
@@ -107,7 +107,7 @@ class AuthGroup extends BackendCurd
         if (empty($id)) {
             $this->error('参数错误');
         }
-        $authGroup = new \application\admin\model\AuthGroup();
+        $authGroup = new \application\home\model\AuthGroup();
         $data = $authGroup->eq('id', $id)->find();
         if (empty($data)) {
             $this->error('数据不存在');
@@ -121,7 +121,7 @@ class AuthGroup extends BackendCurd
             $this->error('无法删除父级角色');
         }
         // 查询此角色组是否关联用户
-        $admin = new \application\admin\model\Admin();
+        $admin = new \application\home\model\Admin();
         if ($admin->eq('auth_group_id', $id)->find()) {
             $this->error('无法删除已关联用户的角色');
         }
