@@ -1,49 +1,58 @@
 {extends file='layout.html'}
 {block name=content}
-<div class="d-flex">
-    <div class="d-block w-50">
-        <table class="table table-bordered mb-0">
-            <tr>
-                <th>版本</th>
-                <td>{$smartyAdminVersion}</td>
-            </tr>
-            <tr>
-                <th>PHP框架</th>
-                <td><a href="https://github.com/quanqiubiannuan/MySmarty" target="_blank">MySmarty</a></td>
-            </tr>
-            <tr>
-                <th>PHP框架版本</th>
-                <td>{$mysmartyVersion}</td>
-            </tr>
-            <tr>
-                <th>PHP版本</th>
-                <td>{$phpVersion}</td>
-            </tr>
-            <tr>
-                <th>PHP配置文件</th>
-                <td>{$iniPath}</td>
-            </tr>
-            <tr>
-                <th>已启用扩展</th>
-                <td>{$extensions}</td>
-            </tr>
-            {if auth('admin/phpinfo')}
-            <tr>
-                <td colspan="2">
-                    {smartyAdminHref('admin/phpinfo','phpinfo','btn-link','_blank')}
-                </td>
-            </tr>
-            {/if}
-        </table>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header border-bottom-0">
+                <h3 class="card-title">系统信息</h3>
+            </div>
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover">
+                    <tr>
+                        <th>版本</th>
+                        <td>{$smartyAdminVersion}</td>
+                    </tr>
+                    <tr>
+                        <th>PHP框架</th>
+                        <td><a href="https://github.com/quanqiubiannuan/MySmarty" target="_blank">MySmarty</a></td>
+                    </tr>
+                    <tr>
+                        <th>PHP框架版本</th>
+                        <td>{$mysmartyVersion}</td>
+                    </tr>
+                    <tr>
+                        <th>PHP版本</th>
+                        <td>{$phpVersion}</td>
+                    </tr>
+                    <tr>
+                        <th>PHP配置文件</th>
+                        <td>{$iniPath}</td>
+                    </tr>
+                    <tr>
+                        <th>已启用扩展</th>
+                        <td>{$extensions}</td>
+                    </tr>
+                    {if auth('admin/phpinfo')}
+                    <tr>
+                        <td colspan="2">
+                            {smartyAdminHref('admin/phpinfo','phpinfo','btn-link','_blank')}
+                        </td>
+                    </tr>
+                    {/if}
+                </table>
+            </div>
+        </div>
     </div>
-    <div class="d-block w-50 ps-2">
+    <div class="col-md-6">
         <div class="card">
             <div class="card-header">
                 登录日志
             </div>
             <ul class="list-group list-group-flush">
                 {foreach $logs as $log}
-                <li class="list-group-item"><b>时间：</b>{$log['create_time']}<b class="ms-2">IP：</b>{$log['ip']}</li>
+                <li class="list-group-item">
+                    {$log['ip']}<small>（{$log['create_time']}）</small>
+                </li>
                 {/foreach}
             </ul>
         </div>
