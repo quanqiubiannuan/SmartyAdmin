@@ -2,27 +2,27 @@
 {block name=content}
 <div class="d-block mb-3">
     {if auth('auth_rule/add')}
-    <a href="{url}/auth_rule/add" class="btn btn-outline-primary align-top me-2"><i class="fas fa-plus me-2"></i>添加</a>
+    <a href="{url}/auth_rule/add" class="btn btn-outline-primary align-top"><i class="fas fa-plus"></i>添加</a>
     {/if}
 </div>
 <div class="table-responsive">
     <table class="table table-bordered mb-0">
         <thead>
         <tr>
-            <th scope="col">ID</th>
-            <th scope="col">链接</th>
-            <th scope="col">规则名称</th>
-            <th scope="col">图标</th>
-            <th scope="col">菜单</th>
-            <th scope="col">排序</th>
-            <th scope="col">状态</th>
-            <th scope="col">操作</th>
+            <th>ID</th>
+            <th>链接</th>
+            <th>规则名称</th>
+            <th>图标</th>
+            <th>菜单</th>
+            <th>排序</th>
+            <th>状态</th>
+            <th>操作</th>
         </tr>
         </thead>
         <tbody>
         {foreach $list as $item}
         <tr>
-            <th scope="row">{$item['id']}</th>
+            <th>{$item['id']}</th>
             <td>{$item['url']}</td>
             <td class="text-start">{echoLevelStr($item['level'])}{$item['name']}</td>
             <td>{$item['icon']}</td>
@@ -31,7 +31,7 @@
             <td>{if $item['status'] == 1}正常{else}停用{/if}</td>
             <td>
                 {if auth('auth_rule/edit')}
-                <a href="{url}/auth_rule/edit?id={$item['id']}" class="btn-link me-2"><i class="fas fa-edit"></i></a>
+                <a href="{url}/auth_rule/edit?id={$item['id']}" class="btn-link"><i class="fas fa-edit"></i></a>
                 {/if}
                 {if auth('auth_rule/delete')}
                 <a href="{url}/auth_rule/delete?id={$item['id']}" id="smartyAdminDelete{$item['id']}" class="btn-link text-danger" onclick="return smartyAdminDelete({$item['id']});"><i class="fas fa-trash-alt"></i></a>

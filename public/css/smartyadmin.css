@@ -13,3 +13,20 @@
 .custom-file-label::after {
     content: '浏览' !important;
 }
+
+.table-center tr td, .table-center tr th {
+    padding: .75rem !important;
+    text-align: center !important;
+}
+
+.search a, .search form .input-group, .search form .custom-select {
+    margin-right: 0.5rem;
+}
+
+.btn i.fas {
+    margin-right: 0.5rem;
+}
+
+tr td a.btn-link{
+    margin: 0 .1rem;
+}
