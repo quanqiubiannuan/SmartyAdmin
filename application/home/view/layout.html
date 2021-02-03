@@ -48,11 +48,11 @@
             <li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#" title="{$smartyAdmin['name']}">
                     {if !empty($smartyAdmin['avatar'])}
-                    <img class="img-fluid" width="20" height="20" src="{$smartyAdmin['avatar']}" alt="{$smartyAdmin['name']}">
+                    <img class="img-circle" width="20" height="20" src="{$smartyAdmin['avatar']}" alt="{$smartyAdmin['name']}">
                     {else}
                     <i class="fas fa-user-circle"></i>
                     {/if}
-                    <span class="ps-2">{$smartyAdmin['name']}</span>
+                    <span>{$smartyAdmin['name']}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
                     {if auth('admin/profile')}

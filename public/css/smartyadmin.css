@@ -1,7 +1,15 @@
-.login-box .login-card-body .input-group img{
+.login-box .login-card-body .input-group img {
     height: 38px;
 }
 
-.font-34{
+.font-34 {
     font-size: 34px;
+}
+
+.font-100 {
+    font-size: 100px;
+}
+
+.custom-file-label::after {
+    content: '浏览' !important;
 }
