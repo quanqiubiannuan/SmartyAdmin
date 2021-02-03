@@ -1,9 +1,9 @@
 # SmartyAdmin
-基于MySmarty框架开发的SmartyAdmin后台极速开发框架
+基于MySmarty框架开发的SmartyAdmin后台极速开发框架。
 
 **介绍**
 
-SmartyAdmin后台极速开发框架是一个基于主流框架开发的后台管理系统，它完成了基础的权限管理开发工作，让你专注于后台业务的开发。
+SmartyAdmin后台极速开发框架是基于PHP开发的后台管理系统，它完成了基础的后台管理系统的开发工作，让您专注于后台业务的开发。
 
 **特点**
 
@@ -15,23 +15,41 @@ SmartyAdmin后台极速开发框架是一个基于主流框架开发的后台管
 
 ④ 菜单管理，同样支持菜单继承，但不应超过2级菜单。
 
-⑤ 不支持移动端，未对移动端进行适配。
+⑤ 自适应，支持手机端后台管理。
 
-⑥ 不需要学习新技术，会框架开发就会用这个极速后台框架开发。
+⑥ 不需要学习新技术，会MySmarty框架开发就会用这个极速后台框架开发。
 
 ⑦ 除了权限管理需要继承 `Backend` 或 `BackendCurd` 类外，你可以任意的开发，没有任何的限制。
 
 **第三方库**
 
-主框架（MySmarty 1.0.1）：https://github.com/quanqiubiannuan/MySmarty
+**后端**
 
-Css框架（Bootstrap v5.0.0-beta1）：https://getbootstrap.com/docs/5.0/getting-started/introduction/
+MySmarty 1.0.1
 
-图标（Font Awesome Free 5.15.1）：https://fontawesome.com/how-to-use/on-the-web/referencing-icons/basic-use
+**前端**
+
+主框架： AdminLTE 3.1.0
+
+Css框架： Bootstrap v4.6.0
+
+图标：Font Awesome Free 5.15.2
+
+**开发文档**
+
+MySmarty框架：https://github.com/quanqiubiannuan/MySmarty
+
+AdminLTE：https://adminlte.io/docs/3.1//index.html
+
+Bootstrap：https://getbootstrap.com/docs/4.6/getting-started/introduction/
+
+Font Awesome：https://fontawesome.com/how-to-use/on-the-web/referencing-icons/basic-use
 
 **预览**
 
-https://github.com/quanqiubiannuan/files/tree/main/smartyadmin/0.0.1/%E9%A2%84%E8%A7%88%E5%9B%BE
+https://github.com/quanqiubiannuan/files/tree/main/smartyadmin/0.0.2/%E9%A2%84%E8%A7%88%E5%9B%BE
+
+https://gitee.com/daiji2/files/tree/main/smartyadmin/0.0.2/%E9%A2%84%E8%A7%88%E5%9B%BE
 
 **安装**
 
@@ -153,11 +171,17 @@ INSERT INTO `auth_rule` (`id`, `url`, `name`, `icon`, `pid`, `is_menu`, `sort_nu
 
 完成以上工作后，就可以访问后台了，开始你的开发工作吧。
 
+**部署**
+
+只需要将项目下的public目录作为网站的根目录，同时将所有请求转发至`index.php`即可。
+
+参考文档：https://github.com/quanqiubiannuan/MySmarty
+
 **开发**
 
-如果你的功能需要权限管理，则需要继承 `application/admin/controller/Backend.php` 类。
+如果你的功能需要权限管理，则需要继承 `application/home/controller/Backend.php` 类。
 
-如果你的功能需要权限管理，且拥有简单的列表、添加、编辑、删除功能，则可以继承 `application/admin/controller/BackendCurd.php` 类。
+如果你的功能需要权限管理，且拥有简单的列表、添加、编辑、删除功能，则可以继承 `application/home/controller/BackendCurd.php` 类。
 
 `BackendCurd` 继承了 `Backend` 类。
 
@@ -169,13 +193,13 @@ INSERT INTO `auth_rule` (`id`, `url`, `name`, `icon`, `pid`, `is_menu`, `sort_nu
 
 需要权限管理
 
-`application/admin/controller/Admin.php`
+`application/home/controller/Admin.php`
 
-`application/admin/controller/AuthGroup.php`
+`application/home/controller/AuthGroup.php`
 
 不需要权限管理
 
-`application/admin/controller/Index.php`
+`application/home/controller/Index.php`
 
 除了权限管理需要继承 `Backend` 或 `BackendCurd` 类外，你可以任意的开发，没有任何的限制。
 
