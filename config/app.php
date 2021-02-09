@@ -6,7 +6,7 @@
 return [
     // 调试，false 关闭，true 开启
     'debug' => true,
-    // nginx转发的请求参数名称。rewrite ^(.*)$ /admin.php?s=$1 last;
+    // nginx转发的请求参数名称。rewrite ^(.*)$ /index.php?s=$1 last;
     'query_str' => 's',
     // 设置X-Powered-By信息，支持中文
     'x_powered_by' => 'MySmarty',
