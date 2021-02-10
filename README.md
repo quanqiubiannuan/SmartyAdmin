@@ -39,7 +39,7 @@ Css框架： Bootstrap v4.6.0
 
 MySmarty框架：https://github.com/quanqiubiannuan/MySmarty
 
-AdminLTE：https://adminlte.io/docs/3.1//index.html
+AdminLTE：https://adminlte.io/docs/3.1/index.html
 
 Bootstrap：https://getbootstrap.com/docs/4.6/getting-started/introduction/
 
