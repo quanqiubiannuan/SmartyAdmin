@@ -30,3 +30,7 @@
 tr td a.btn-link{
     margin: 0 .1rem;
 }
+
+.layout-fixed .wrapper .sidebar {
+    height: calc(100vh - 1px) !important;
+}
